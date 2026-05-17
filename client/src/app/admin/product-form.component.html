@@ -1,0 +1,178 @@
+<div class="form-studio-wrapper">
+  <div class="form-console-box">
+    
+    <header class="form-header">
+      <a
+        routerLink="/admin"
+        [state]="{ fromAdminArea: true }"
+        class="back-dashboard-link"
+      >← Abort to Command Core</a>
+      <h1>{{ isEdit ? 'Modify Asset Profile' : 'Provision New Hardware' }}</h1>
+      <p>Configure device deployment matrix parameters below.</p>
+    </header>
+
+    <form (ngSubmit)="submitForm()" class="studio-form">
+      
+      <div class="form-section-divider">
+        <span>01 / Core Metadata</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="input-row-group">
+        <div class="field-node">
+          <label>Product Display Name</label>
+          <input type="text" placeholder="e.g., iPhone 15 Pro Max" [(ngModel)]="product.name" name="name" required autocomplete="off">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Brand Manufacturer</label>
+          <input type="text" placeholder="e.g., Apple" [(ngModel)]="product.brand" name="brand" required>
+        </div>
+        <div class="field-node">
+          <label>Category Domain</label>
+          <input type="text" placeholder="e.g., smartphone" [(ngModel)]="product.category" name="category" required>
+        </div>
+      </div>
+
+      <div class="input-row-group">
+        <div class="field-node showcase-checkbox-row">
+          <label>Promote to Homepage Showcase</label>
+          <div class="toggle-switch-container" (click)="toggleFeatured()">
+            <div class="switch-track" [class.active]="product.isFeatured">
+              <div class="switch-handle"></div>
+            </div>
+            <span class="switch-status-label">{{ product.isFeatured ? 'Active Promo' : 'Standard Visibility' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-row-group">
+        <div class="field-node">
+          <label>Asset Image URL</label>
+          <input type="url" placeholder="https://links/device.png" [(ngModel)]="product.image" name="image" required>
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Valuation Cost (INR)</label>
+          <div class="price-input-wrapper">
+            <span class="currency-tag">₹</span>
+            <input type="number" placeholder="139900" [(ngModel)]="product.price" name="price" required>
+          </div>
+        </div>
+        <div class="field-node">
+          <label>Available Stock Allocation</label>
+          <input type="number" placeholder="50" [(ngModel)]="product.stock" name="stock" required>
+        </div>
+      </div>
+
+      <div class="form-section-divider">
+        <span>02 / Hardware Architecture</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>System RAM (GB)</label>
+          <input type="number" placeholder="8" [(ngModel)]="product.ram" name="ram" required>
+        </div>
+        <div class="field-node">
+          <label>Internal Storage (GB)</label>
+          <input type="number" placeholder="256" [(ngModel)]="product.storage" name="storage" required>
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Processor Engine Name</label>
+          <input type="text" placeholder="e.g., A17 Pro Bionic" [(ngModel)]="product.processor" name="processor" required>
+        </div>
+        <div class="field-node">
+          <label>Battery Capacity (mAh)</label>
+          <input type="number" placeholder="4441" [(ngModel)]="product.battery" name="battery" required>
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Processor Tier</label>
+          <select [(ngModel)]="product.processorTier" name="processorTier" required>
+            <option value="midrange">Midrange Efficiency Core</option>
+            <option value="upper-midrange">Upper Midrange Compute</option>
+            <option value="flagship">Flagship Silicon Elite</option>
+          </select>
+        </div>
+        <div class="field-node">
+          <label>Price Segment Placement</label>
+          <select [(ngModel)]="product.priceSegment" name="priceSegment" required>
+            <option value="budget">Budget Segment Entry</option>
+            <option value="midrange">Midrange Standard Matrix</option>
+            <option value="premium">Premium Flagship Line</option>
+            <option value="ultra-premium">Ultra-Premium Luxury Class</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-divider">
+        <span>03 / Scoring Engine Calibration (1 - 100)</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Gaming Metric Score ({{ product.gamingScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.gamingScore" name="gamingScore" [style.background]="getRangeBackground(product.gamingScore)">
+        </div>
+        <div class="field-node">
+          <label>Camera Optic Score ({{ product.cameraScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.cameraScore" name="cameraScore" [style.background]="getRangeBackground(product.cameraScore)">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Performance Speed Score ({{ product.performanceScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.performanceScore" name="performanceScore" [style.background]="getRangeBackground(product.performanceScore)">
+        </div>
+        <div class="field-node">
+          <label>Battery Endurance Score ({{ product.batteryScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.batteryScore" name="batteryScore" [style.background]="getRangeBackground(product.batteryScore)">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Industrial Design Score ({{ product.designScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.designScore" name="designScore" [style.background]="getRangeBackground(product.designScore)">
+        </div>
+        <div class="field-node">
+          <label>Display Quality Score ({{ product.displayScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.displayScore" name="displayScore" [style.background]="getRangeBackground(product.displayScore)">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Market Value Loop Score ({{ product.valueScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.valueScore" name="valueScore" [style.background]="getRangeBackground(product.valueScore)">
+        </div>
+      </div>
+
+      <div class="input-row-group" style="margin-top: 15px;">
+        <div class="field-node">
+          <label>Technical Narrative Description</label>
+          <textarea placeholder="Enter comprehensive product storytelling profiles..." [(ngModel)]="product.description" name="description" rows="4"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="console-submit-btn">
+        <span>{{ isEdit ? 'Commit Specification Matrix' : 'Deploy Asset to Cloud' }}</span>
+      </button>
+
+    </form>
+
+  </div>
+</div>

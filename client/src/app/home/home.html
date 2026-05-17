@@ -1,0 +1,202 @@
+<header class="glass-header">
+  <nav class="nav-container">
+    <div class="logo-branding" routerLink="/" aria-label="Nyvra home">
+      <img src="assets/nyvra-mark.png" alt="" class="brand-mark">
+      <span>Nyvra</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+      <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
+      <li><a href="#domains" (click)="scrollToSection('domains', $event)">Domains</a></li>
+      <li><a href="#featured-products" (click)="scrollToSection('featured-products', $event)">Featured</a></li>
+      <li><a href="#experience" (click)="scrollToSection('experience', $event)">Experience</a></li>
+      <li>
+        <a routerLink="/smart-finder" routerLinkActive="active" class="smart-finder-nav">
+          <span class="smart-dot"></span>
+          <span>Smart Finder</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="wishlist-trigger" routerLink="/wishlist" aria-label="Open wishlist">
+        <span class="heart-icon">❤️</span>
+        <span class="badge" *ngIf="getWishlistCount() > 0">{{ getWishlistCount() }}</span>
+      </div>
+      
+      <div class="auth-matrix">
+        <span *ngIf="loggedIn" class="user-greeting">Hi, {{ userName }}</span>
+        <a *ngIf="!loggedIn" routerLink="/login" class="action-btn login">Login</a>
+        <button *ngIf="loggedIn" (click)="logout()" class="action-btn logout">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section id="hero">
+    <video
+      #heroVideo
+      class="hero-video-bg"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="assets/hero-poster.png"
+    >
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay-gradient"></div>
+
+    <div class="hero-core-content">
+      <img src="assets/nyvra-mark.png" alt="" class="hero-brand-mark">
+      <span class="hero-eyebrow">Design meets premium technology</span>
+      <h1 class="hero-title">Nyvra</h1>
+      <p class="hero-lead">Explore a premium hardware ecosystem inspired by architectural minimalism, fluid layouts, and zero compromises.</p>
+
+      <div class="hero-action-row">
+        <a routerLink="/products" class="prime-btn">Shop Collection</a>
+        <a routerLink="/smart-finder" class="prime-btn secondary smart-finder-cta">
+          <span>Smart Finder</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3v3"></path><path d="M12 18v3"></path><path d="M3 12h3"></path><path d="M18 12h3"></path><path d="m5.6 5.6 2.1 2.1"></path><path d="m16.3 16.3 2.1 2.1"></path><path d="m18.4 5.6-2.1 2.1"></path><path d="m7.7 16.3-2.1 2.1"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="domains" class="content-section">
+    <div class="section-container">
+      <div class="section-header-block">
+        <span class="section-tag">SMARTPHONE MATRIX</span>
+        <h2 class="section-main-title">Explore Phone Domains</h2>
+        <div class="section-accent-line"></div>
+      </div>
+
+      <div class="domains-matrix">
+        <div
+          class="domain-card reveal"
+          *ngFor="let cat of categories"
+          [routerLink]="cat.route"
+          [queryParams]="cat.queryParams"
+        >
+          <div class="domain-glow" [style.background]="cat.glowColor"></div>
+          <div class="domain-icon-wrapper">
+            <svg class="domain-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="cat.svgPath" />
+            </svg>
+          </div>
+          <div class="domain-meta">
+            <h3>{{ cat.name }}</h3>
+            <p>{{ cat.caption }}</p>
+          </div>
+          <div class="domain-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="featured-products" class="content-section alternate-bg">
+    <div class="section-container">
+      <div class="section-header-block">
+        <span class="section-tag">Curated Selections</span>
+        <h2 class="section-main-title">Featured Showcase</h2>
+        <div class="section-accent-line"></div>
+      </div>
+
+      <div *ngIf="loading" class="matrix-status-box">
+        <div class="spinner"></div>
+        <p>Syncing product matrix...</p>
+      </div>
+      <div *ngIf="!loading && products.length === 0" class="matrix-status-box empty">
+        <p>No active products matching standard profiles found.</p>
+      </div>
+
+      <div class="showcase-grid" *ngIf="!loading && products.length > 0">
+        <div class="showcase-card reveal" *ngFor="let product of products; trackBy: trackByProduct">
+          <div class="showcase-img-frame" [routerLink]="['/products', product._id]">
+            <img [src]="product.image" [alt]="product.name" loading="lazy">
+          </div>
+
+          <div class="showcase-data">
+            <div class="showcase-top-row">
+              <span class="showcase-brand">{{ product.brand }}</span>
+              <button class="favorite-toggle" (click)="toggleWishlist(product); $event.stopPropagation()" [class.is-active]="isInWishlist(product._id)">
+                <svg viewBox="0 0 24 24" [attr.fill]="isInWishlist(product._id) ? '#ff2d55' : 'none'" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </button>
+            </div>
+
+            <h3 class="showcase-title" [routerLink]="['/products', product._id]">{{ product.name }}</h3>
+            <p class="showcase-desc">{{ product.description }}</p>
+
+            <div class="showcase-footer">
+              <span class="showcase-price">{{ product.price | currency:'INR':'symbol':'1.0-0' }}</span>
+              <a [routerLink]="['/products', product._id]" class="view-btn">
+                <span>View Details</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="content-section">
+    <div class="section-container">
+      <div class="section-header-block">
+        <span class="section-tag">Performance Vectors</span>
+        <h2 class="section-main-title">The Core Experience</h2>
+        <div class="section-accent-line"></div>
+      </div>
+
+      <div class="advantages-matrix">
+        <div class="advantage-card reveal">
+          <div class="advantage-icon-box cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+          </div>
+          <h3>Curated Flagships</h3>
+          <p>Hand-picked tech domains calibrated exclusively for high-tier computing and productivity workflows.</p>
+        </div>
+
+        <div class="advantage-card reveal">
+          <div class="advantage-icon-box purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <h3>Zero Latency Pipe</h3>
+          <p>Hyper-optimized state management architectures supplying instant content delivery screens.</p>
+        </div>
+
+        <div class="advantage-card reveal">
+          <div class="advantage-icon-box emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <h3>Encrypted Protocols</h3>
+          <p>Full-stack authentication guardrails keeping your transaction telemetry secure.</p>
+        </div>
+
+        <div class="advantage-card reveal">
+          <div class="advantage-icon-box amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          </div>
+          <h3>Priority Dispatch</h3>
+          <p>Direct premium logistical routing guaranteeing physical device arrivals in mint condition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="studio-footer">
+  <div class="footer-content">
+    <p>&copy; 2026 NYVRA. ALL RIGHTS RESERVED.</p>
+  </div>
+</footer>

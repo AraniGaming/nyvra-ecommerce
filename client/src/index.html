@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nyvra</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/nyvra-tab-icon.png?v=nyvra-4" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/nyvra-tab-icon-16.png?v=nyvra-4" />
+    <link rel="shortcut icon" type="image/png" href="/nyvra-tab-icon.png?v=nyvra-4" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=nyvra-4" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg?v=nyvra-4" color="#ffffff" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=nyvra-4" />
+    <meta name="theme-color" content="#050609" />
+    <script>
+      (() => {
+        const version = `nyvra-${Date.now()}`;
+        const iconLinks = [
+          ['icon', 'image/png', '/nyvra-tab-icon.png', '32x32'],
+          ['shortcut icon', 'image/png', '/nyvra-tab-icon.png', '32x32'],
+          ['apple-touch-icon', 'image/png', '/apple-touch-icon.png', '180x180']
+        ];
+
+        document
+          .querySelectorAll('link[rel*="icon"]')
+          .forEach((link) => link.remove());
+
+        iconLinks.forEach(([rel, type, href, sizes]) => {
+          const link = document.createElement('link');
+          link.rel = rel;
+          link.type = type;
+          link.href = `${href}?v=${version}`;
+          link.sizes = sizes;
+          document.head.appendChild(link);
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

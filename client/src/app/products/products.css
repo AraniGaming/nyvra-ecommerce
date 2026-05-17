@@ -1,0 +1,359 @@
+:root {
+  --bg-dark-void: #090a0f;
+  --bg-studio-surface: #111218;
+  --text-pure-white: #ffffff;
+  --text-muted-gray: #8e929e;
+  --accent-electric-blue: #007aff;
+  --glass-edge: rgba(255, 255, 255, 0.06);
+  --card-radius-spec: 20px;
+}
+
+/* HIGH-END NAVIGATION LINKING FRAME */
+.glass-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(17, 18, 24, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-edge);
+  z-index: 1000;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+}
+
+.logo-branding {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--text-pure-white);
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.08);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.85rem, 1.8vw, 1.55rem);
+  list-style: none;
+}
+
+.nav-links a {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted-gray);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+
+.nav-links a.active {
+  color: var(--text-pure-white);
+}
+
+.nav-links a:hover {
+  color: var(--text-pure-white);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.wishlist-trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.wishlist-trigger .badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #ff2d55;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 20px;
+}
+
+/* CORE CONTENT PAGE CONTAINER GRID */
+.products-page {
+  padding: 140px 2rem 80px;
+  background-color: var(--bg-dark-void);
+  min-height: 100vh;
+  color: var(--text-pure-white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* TYPOGRAPHIC SPECIFICATION HEADER BLOCK */
+.products-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.header-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--accent-electric-blue);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.products-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.products-header p {
+  color: var(--text-muted-gray);
+  font-size: 1.05rem;
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.header-accent-bar {
+  width: 50px;
+  height: 3px;
+  background: var(--accent-electric-blue);
+  margin: 20px auto 0;
+  border-radius: 2px;
+}
+
+/* RESPONSIVE FLUID DISCOVERY GRID */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* THE PREMIUM HARDWARE CARD ARCHITECTURE */
+.product-premium-card {
+  background: var(--bg-studio-surface);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--card-radius-spec);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* 🛠️ FORCE THE FLOATING IMAGE POD (Overriding all old full-bleed traits) */
+.product-premium-card .premium-img-container,
+.product-card .product-image {
+  width: calc(100% - 28px) !important; /* Forces it away from left/right edges */
+  height: 220px !important;
+  margin: 14px auto 0 !important;     /* Pulls it away from the top edge and centers it */
+  background: #ffffff !important; 
+  border-radius: 14px !important;    /* Forces beautiful, clean rounded corners on the white box */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.5rem !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease !important;
+}
+
+/* Ensure the image inside stays beautifully contained and doesn't stretch weirdly */
+.product-premium-card .premium-img-container img,
+.product-card .product-image img,
+.product-card img {
+  width: auto !important;
+  max-width: 85% !important;
+  height: auto !important;
+  max-height: 85% !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.06)) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+/* Premium Hover Transitions */
+.product-premium-card:hover .premium-img-container,
+.product-card:hover .product-image {
+  background-color: #fbfcfe !important;
+  transform: translateY(-2px) !important;
+}
+
+.product-premium-card:hover .premium-img-container img,
+.product-card:hover .product-image img {
+  transform: scale(1.06) translateY(-2px) !important;
+}
+
+/* DATA LAYOUT FIELDS */
+.premium-card-details {
+  padding: 1.7rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-brand-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-electric-blue);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.product-display-name {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-pure-white);
+  margin-bottom: 8px;
+}
+
+.product-short-description {
+  font-size: 0.88rem;
+  color: var(--text-muted-gray);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* PREMIUM PRICE AND NAVIGATION TRAILING FOOTER */
+.premium-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.product-price-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-pure-white);
+}
+
+.explore-micro-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-pure-white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.explore-micro-cta svg {
+  width: 12px;
+  height: 12px;
+}
+
+.product-premium-card:hover .explore-micro-cta {
+  gap: 0.6rem;
+  color: var(--accent-electric-blue);
+}
+
+/* HOVER PHYSICAL ELEVATION */
+.product-premium-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* FLOATING WIRE VECTOR WISHLIST TOGGLE */
+.floating-wishlist-toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(17, 18, 24, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-edge);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--text-muted-gray);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.floating-wishlist-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.floating-wishlist-toggle:hover {
+  transform: scale(1.08);
+  color: #ff2d55;
+  background: rgba(17, 18, 24, 0.8);
+}
+
+.floating-wishlist-toggle.is-favorite {
+  color: #ff2d55;
+  border-color: rgba(255, 45, 85, 0.2);
+}
+
+/* DYNAMIC METRIC SPIN TIMERS */
+.matrix-loader-box {
+  text-align: center;
+  padding: 6rem 2rem;
+  color: var(--text-muted-gray);
+}
+
+.ui-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  border-top-color: var(--accent-electric-blue);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  animation: loop-spin 0.8s linear infinite;
+}
+
+@keyframes loop-spin {
+  to { transform: rotate(300deg); }
+}

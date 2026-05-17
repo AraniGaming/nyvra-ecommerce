@@ -1,0 +1,167 @@
+<main class="finder-studio">
+  <div class="finder-container">
+
+    <div class="step-wrapper view-fade" *ngIf="currentStep === 1">
+      <div class="hero-entry-card">
+        <span class="eyebrow-tag">INTELLIGENT HARDWARE CONFIGURATOR</span>
+        <h1>Find Your Perfect Phone</h1>
+        <p>Skip the confusing spec sheets. Tell us how you live, what matters most, and match with the perfect device structure instantly.</p>
+        <button class="launch-btn" (click)="goToStep(2)">
+          <span>Begin Evaluation</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="step-wrapper" *ngIf="currentStep === 2">
+      <div class="step-header">
+        <span class="step-counter">STEP 01</span>
+        <h2>Choose Your Core Domain</h2>
+        <p>Select the profile that matches your daily routine best.</p>
+      </div>
+
+      <div class="archetype-grid">
+        <div class="archetype-card" *ngFor="let mode of archetypes" (click)="selectArchetype(mode.id)" [class.selected]="formState.usage === mode.id">
+          <div class="card-glow-overlay" [style.background]="mode.color"></div>
+          <div class="card-icon">{{ mode.icon }}</div>
+          <h3>{{ mode.title }}</h3>
+          <p>{{ mode.desc }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-wrapper" *ngIf="currentStep === 3">
+      <div class="step-header">
+        <span class="step-counter">STEP 02</span>
+        <h2>Calibrate Priorities</h2>
+        <p>Adjust what metrics your next phone must hit perfectly. Changes reflect instantly below.</p>
+      </div>
+
+      <div class="config-split-layout">
+        <div class="sliders-panel">
+          <div class="slider-group" *ngFor="let control of sliderConfigs">
+            <div class="slider-meta">
+              <label>{{ control.label }}</label>
+              <span class="value-badge">{{ formState.weights[control.key] }}%</span>
+            </div>
+            <input type="range" min="10" max="100" step="5" [(ngModel)]="formState.weights[control.key]" (ngModelChange)="onFilterChange()">
+          </div>
+
+          <div class="slider-group budget-group">
+            <div class="slider-meta">
+              <label>Maximum Budget Cap</label>
+              <span class="value-badge price-badge">{{ formatBudgetLabel(formState.budget) }}</span>
+            </div>
+            <input
+              type="range"
+              [min]="budgetMin"
+              [max]="budgetMax"
+              [step]="budgetStep"
+              [(ngModel)]="formState.budget"
+              (ngModelChange)="onFilterChange()"
+            >
+            <div class="range-edge-labels">
+              <span>{{ formatBudgetLabel(budgetMin) }}</span>
+              <span>{{ formatBudgetLabel(budgetMax) }}</span>
+            </div>
+          </div>
+
+          <div class="advanced-accordion">
+            <button class="accordion-toggle" (click)="toggleAdvancedPanel()">
+              <span>⚙️ Advanced Architectural Tuning</span>
+              <svg [class.open]="showAdvanced" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+
+            <div class="accordion-content" *ngIf="showAdvanced">
+              <div class="advanced-grid">
+                <div class="select-field">
+                  <label>Minimum RAM</label>
+                  <select [(ngModel)]="formState.advanced.ram" (change)="onFilterChange()">
+                    <option value="4">4 GB Allocation</option>
+                    <option value="6">6 GB Allocation</option>
+                    <option value="8">8 GB Flagship Base</option>
+                    <option value="12">12 GB+ High Performance</option>
+                  </select>
+                </div>
+
+                <div class="select-field">
+                  <label>Minimum Storage</label>
+                  <select [(ngModel)]="formState.advanced.storage" (change)="onFilterChange()">
+                    <option value="64">64 GB Flash</option>
+                    <option value="128">128 GB Standard</option>
+                    <option value="256">256 GB Content Creator</option>
+                    <option value="512">512 GB+ Mass Matrix</option>
+                  </select>
+                </div>
+
+                <div class="select-field">
+                  <label>Processor Tier</label>
+                  <select [(ngModel)]="formState.advanced.processorTier" (change)="onFilterChange()">
+                    <option value="midrange">Midrange Efficiency Core</option>
+                    <option value="upper-midrange">Upper Midrange Compute</option>
+                    <option value="flagship">Flagship Silicon Elite</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="live-results-section">
+        <div class="results-divider">
+          <h3>Your Best Matches</h3>
+          <div class="divider-line"></div>
+        </div>
+
+        <div class="loading-matrix" *ngIf="loading">
+          <div class="matrix-ring"></div>
+          <p>Computing compatibility matrices...</p>
+        </div>
+
+        <div class="results-scroll-container" *ngIf="!loading">
+          <div class="match-row-card" *ngFor="let product of matches; trackBy: trackByProduct">
+            
+            <div
+              class="match-score-ring"
+              [style.background]="getMatchRingBackground(product.matchPercentage)"
+              [style.box-shadow]="getMatchRingShadow(product.matchPercentage)"
+            >
+              <span class="percentage-metric">{{ product.matchPercentage }}%</span>
+              <span class="match-label">Match</span>
+            </div>
+
+            <div class="match-card-meta">
+              <span class="brand-caps">{{ product.brand }}</span>
+              <h3>{{ product.cleanBaseName }}</h3>
+              <div class="match-tier-row">
+                <span class="match-tier">{{ product.matchTier }}</span>
+                <span *ngFor="let spec of product.specHighlights" class="spec-chip">{{ spec }}</span>
+              </div>
+              
+              <ul class="trust-bullet-matrix">
+                <li *ngFor="let bullet of product.trustBullets">
+                  <span class="check-vector">✓</span> {{ bullet }}
+                </li>
+              </ul>
+
+              <div class="score-breakdown" *ngIf="product.scoreBreakdown">
+                <span>Priority {{ product.scoreBreakdown.priority }}%</span>
+                <span>Budget {{ product.scoreBreakdown.budget }}%</span>
+                <span>Hardware {{ product.scoreBreakdown.hardware }}%</span>
+              </div>
+            </div>
+
+            <div class="match-action-hub">
+              <span class="price-indicator">From {{ (product.fromPrice || product.price) | currency:'INR':'symbol':'1.0-0' }}</span>
+              <button [routerLink]="['/products', product._id]" class="view-profile-btn">Configure Model</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>

@@ -1,0 +1,92 @@
+<header class="glass-header">
+  <nav class="nav-container">
+    <div class="logo-branding" routerLink="/" aria-label="Nyvra home">
+      <img src="assets/nyvra-mark.png" alt="" class="brand-mark">
+      <span>Nyvra</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/products">Products</a></li>
+      <li><a routerLink="/" fragment="domains">Domains</a></li>
+      <li><a routerLink="/" fragment="featured-products">Featured</a></li>
+      <li><a routerLink="/" fragment="experience">Experience</a></li>
+      <li>
+        <a routerLink="/smart-finder" class="smart-finder-nav">
+          <span class="smart-dot"></span>
+          <span>Smart Finder</span>
+        </a>
+      </li>
+    </ul>
+
+    <a routerLink="/wishlist" class="wishlist-trigger active" aria-label="Open wishlist">
+      <span class="heart-icon">❤️</span>
+      <span class="badge" *ngIf="getWishlistCount() > 0">{{ getWishlistCount() }}</span>
+    </a>
+  </nav>
+</header>
+
+<main class="wishlist-page">
+  <section class="wishlist-hero">
+    <span class="eyebrow">Saved Hardware</span>
+    <h1>Your Wishlist</h1>
+    <p>Keep your favorite Nyvra configurations ready while you compare specs, prices, and fit.</p>
+  </section>
+
+  <section *ngIf="loading" class="wishlist-state">
+    <div class="loading-ring"></div>
+    <p>Loading saved products...</p>
+  </section>
+
+  <section *ngIf="!loading && !isLoggedIn" class="wishlist-state action-state">
+    <h2>Login to view your wishlist</h2>
+    <p>Your saved products are attached to your account.</p>
+    <a routerLink="/login" class="state-action">Login</a>
+  </section>
+
+  <section *ngIf="!loading && isLoggedIn && errorMessage" class="wishlist-state action-state">
+    <h2>Wishlist unavailable</h2>
+    <p>{{ errorMessage }}</p>
+    <button type="button" class="state-action" (click)="loadWishlist()">Retry</button>
+  </section>
+
+  <section *ngIf="!loading && isLoggedIn && !errorMessage && wishlistProducts.length === 0" class="wishlist-state action-state">
+    <h2>No saved products yet</h2>
+    <p>Tap the heart on any product to save it here.</p>
+    <a routerLink="/products" class="state-action">Explore Products</a>
+  </section>
+
+  <section *ngIf="!loading && isLoggedIn && !errorMessage && wishlistProducts.length > 0" class="wishlist-grid">
+    <article class="wishlist-card" *ngFor="let product of wishlistProducts; trackBy: trackByProduct">
+      <button
+        type="button"
+        class="remove-btn"
+        (click)="removeFromWishlist(product)"
+        aria-label="Remove from wishlist"
+      >
+        ×
+      </button>
+
+      <a class="image-frame" [routerLink]="['/products', product._id]">
+        <img [src]="product.image" [alt]="product.name" loading="lazy">
+      </a>
+
+      <div class="wishlist-card-body">
+        <span class="brand">{{ product.brand }}</span>
+        <h2 [routerLink]="['/products', product._id]">{{ product.name }}</h2>
+        <p>{{ product.description }}</p>
+
+        <div class="spec-row">
+          <span>{{ product.ram }}GB RAM</span>
+          <span>{{ formatStorage(product.storage) }} Storage</span>
+          <span>{{ product.battery }}mAh</span>
+        </div>
+
+        <div class="card-footer">
+          <strong>{{ product.price | currency:'INR':'symbol':'1.0-0' }}</strong>
+          <a [routerLink]="['/products', product._id]" class="details-link">View Details</a>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>

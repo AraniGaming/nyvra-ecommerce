@@ -1,0 +1,309 @@
+:root {
+  --void-bg: #090a0f;
+  --panel-surface: #111218;
+  --electric-blue: #007aff;
+  --studio-red: #ff3b30;
+  --text-white: #ffffff;
+  --text-muted: #8e929e;
+  --glass-border: rgba(255, 255, 255, 0.06);
+}
+
+.admin-studio-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem 80px;
+  background-color: var(--void-bg);
+  color: var(--text-white);
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* TOP COMMAND UTILITIES STRIP */
+.studio-top-strip {
+  padding: 20px 2rem;
+  display: flex;
+  justify-content: flex-start;
+  background: var(--void-bg);
+}
+
+.strip-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-pill {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  color: var(--text-dim);
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.action-pill svg { width: 14px; height: 14px; }
+.action-pill.logout:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--studio-red);
+  border-color: rgba(255, 59, 48, 0.2);
+}
+
+.action-pill.refresh {
+  font-size: 1.1rem;
+  padding: 4px 12px;
+}
+.action-pill.refresh:hover {
+  color: var(--electric-blue);
+  border-color: rgba(0, 122, 255, 0.2);
+}
+
+/* DASHBOARD HEADER CORE */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 40px 0;
+}
+
+.sub-tag {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  color: var(--electric-blue);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.dashboard-header h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.inventory-counter {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.inventory-counter span {
+  color: var(--text-white);
+  font-weight: 700;
+}
+
+/* Update the Add button to use the new Neon Tracing style */
+.prime-add-btn {
+  background: transparent !important;
+  color: var(--deep-neon-azure) !important;
+  border: 1px solid var(--deep-neon-azure) !important;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 🚀 NEON GLOW TRACING ON HOVER */
+.prime-add-btn:hover {
+  background: rgba(0, 210, 255, 0.04) !important;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Switch the brand labels to use Ultra Violet accents */
+.brand-badge {
+  background: rgba(168, 85, 247, 0.1);
+  color: var(--ultra-violet);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Force the Change Detector sequencing fix from previous step to use success palette for price text */
+.price-text {
+  color: var(--success-emerald) !important; 
+  font-weight: 700;
+}
+
+/* Telemetry dots must use the new standardized palette */
+.stock-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success-emerald);
+}
+
+.stock-indicator.low-stock .stock-dot { background: var(--warning-amber); }
+.stock-indicator.low-stock .stock-count { color: var(--warning-amber); font-weight: 600; }
+.prime-add-btn svg { width: 16px; height: 16px; }
+
+/* REENGINEERED COMMAND DATA SHEET TABLE */
+.table-blur-wrapper {
+  background: var(--panel-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.studio-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.studio-data-table th {
+  background: rgba(255, 255, 255, 0.01);
+  border-bottom: 1px solid var(--glass-border);
+  padding: 16px 24px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.studio-data-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  vertical-align: middle;
+}
+
+.studio-data-table tr:last-child td { border-bottom: none; }
+.studio-data-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+.primary-text { color: var(--text-white) !important; font-weight: 600; }
+.price-text { color: var(--text-white) !important; font-weight: 700; }
+.text-right { text-align: right !important; }
+
+/* DEVICE CELL IMAGES ASSETS LABS */
+.table-img-pod {
+  width: 50px;
+  height: 50px;
+  background: #ffffff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  overflow: hidden;
+}
+
+.table-img-pod img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.brand-badge {
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--electric-blue);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* STOCK COUNTER TELEMETRY DOTS */
+.stock-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34c759; /* Healthy stock green */
+}
+
+.stock-indicator.low-stock .stock-dot { background: #ff9500; } /* Low stock orange */
+.stock-indicator.low-stock .stock-count { color: #ff9500; font-weight: 600; }
+
+/* OPERATIONS CLUSTER BUTTONS */
+.operations-cluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ops-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.ops-btn svg { width: 16px; height: 16px; }
+
+.ops-btn.edit:hover {
+  background: rgba(255, 149, 0, 0.1);
+  color: #ff9500;
+  border-color: rgba(255, 149, 0, 0.2);
+}
+
+.ops-btn.delete:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--studio-red);
+  border-color: rgba(255, 59, 48, 0.2);
+}
+
+/* 🌟 INTERACTIVE SHOWCASE SELECTION STARS */
+.showcase-toggle-btn {
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Default Star Look (Off State) */
+.showcase-toggle-btn .star-icon {
+  width: 20px;
+  height: 20px;
+  fill: none !important;
+  color: var(--text-muted) !important;
+  transition: all 0.3s ease;
+}
+
+/* Hover Physics feedback loop */
+.showcase-toggle-btn:hover {
+  background: rgba(255, 202, 40, 0.08) !important;
+}
+.showcase-toggle-btn:hover .star-icon {
+  color: var(--warning-amber) !important;
+  transform: scale(1.1);
+}
+
+/* 🔥 ACTIVE STATE: Forces color fill directly via high-priority CSS classes */
+.showcase-toggle-btn.is-featured .star-icon {
+  fill: var(--warning-amber) !important;
+  color: var(--warning-amber) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 202, 40, 0.5)) !important;
+}

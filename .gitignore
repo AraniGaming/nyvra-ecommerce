@@ -1,0 +1,13 @@
+node_modules/
+server/node_modules/
+client/node_modules/
+
+server/.env
+.env
+
+client/dist/
+client/.angular/
+
+.DS_Store
+npm-debug.log*
+huu.txt

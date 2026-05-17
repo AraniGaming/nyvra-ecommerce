@@ -1,0 +1,86 @@
+<header class="glass-header">
+  <nav class="nav-container">
+    <div class="logo-branding" routerLink="/" aria-label="Nyvra home">
+      <img src="assets/nyvra-mark.png" alt="" class="brand-mark">
+      <span>Nyvra</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/products" class="active">Products</a></li>
+      <li><a routerLink="/" fragment="domains">Domains</a></li>
+      <li><a routerLink="/" fragment="featured-products">Featured</a></li>
+      <li><a routerLink="/" fragment="experience">Experience</a></li>
+      <li>
+        <a routerLink="/smart-finder" class="smart-finder-nav">
+          <span class="smart-dot"></span>
+          <span>Smart Finder</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="wishlist-trigger" routerLink="/wishlist" aria-label="Open wishlist">
+        <span class="heart-icon">❤️</span>
+        <span class="badge" *ngIf="getWishlistCount() > 0">{{ getWishlistCount() }}</span>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="products-page">
+  <div class="page-container">
+    
+    <div class="products-header">
+      <span class="header-tag">HARDWARE MATRIX</span>
+      <h1>Our Complete Collection</h1>
+      <p>Discover hyper-calibrated flagships engineered for premium workflow performance.</p>
+      <div class="header-accent-bar"></div>
+    </div>
+
+    <div *ngIf="loading" class="matrix-loader-box">
+      <div class="ui-spinner"></div>
+      <p>Fetching active inventory profiles...</p>
+    </div>
+
+    <div *ngIf="!loading" class="products-grid">
+      <div 
+        *ngFor="let product of products" 
+        class="product-premium-card"
+        [routerLink]="['/products', product._id]"
+      >
+        <button
+          class="floating-wishlist-toggle"
+          [class.is-favorite]="isInWishlist(product._id)"
+          (click)="toggleWishlist(product); $event.stopPropagation()"
+        >
+          <svg viewBox="0 0 24 24" [attr.fill]="isInWishlist(product._id) ? '#ff2d55' : 'none'" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+
+        <div class="premium-img-container">
+          <img [src]="product.image" [alt]="product.name" loading="lazy">
+        </div>
+
+        <div class="premium-card-details">
+          <span class="product-brand-tag">{{ product.brand }}</span>
+          <h3 class="product-display-name">{{ product.name }}</h3>
+          <p class="product-short-description">{{ product.description }}</p>
+          
+         <div class="premium-card-footer">
+  <span class="product-price-label">
+    <span style="font-size: 0.8rem; color: #8e929e; font-weight: 500; display: block; margin-bottom: -2px;">From</span>
+    {{ product.price | currency:'INR':'symbol':'1.0-0' }}
+  </span>
+  <span class="explore-micro-cta">
+    <span>Configure</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+  </span>
+</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>

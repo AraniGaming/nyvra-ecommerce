@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+@import './app/home/home.css';
+
+.smart-finder-nav {
+  position: relative;
+  min-width: 148px;
+  min-height: 42px;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.15rem;
+  border: 1px solid rgba(0, 210, 255, 0.28);
+  border-radius: 999px;
+  color: #ffffff !important;
+  background:
+    linear-gradient(135deg, rgba(0, 210, 255, 0.18), rgba(168, 85, 247, 0.16)),
+    rgba(255, 255, 255, 0.045);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+    0 12px 32px rgba(0, 122, 255, 0.12);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.smart-finder-nav::after {
+  content: '';
+  position: absolute;
+  inset: -40% auto -40% -65%;
+  width: 52%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+  transform: skewX(-18deg);
+  animation: finderSweep 4s ease-in-out infinite;
+}
+
+.smart-finder-nav:hover,
+.smart-finder-nav.active {
+  transform: translateY(-1px);
+  border-color: rgba(0, 210, 255, 0.48);
+  box-shadow:
+    0 0 0 1px rgba(0, 210, 255, 0.12) inset,
+    0 16px 42px rgba(0, 122, 255, 0.18);
+}
+
+.smart-dot {
+  flex: 0 0 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #00d2ff;
+  box-shadow:
+    0 0 10px rgba(0, 210, 255, 0.95),
+    0 0 20px rgba(168, 85, 247, 0.7);
+}
+
+.smart-finder-nav span {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes finderSweep {
+  0%, 55% {
+    left: -65%;
+  }
+
+  72%, 100% {
+    left: 120%;
+  }
+}

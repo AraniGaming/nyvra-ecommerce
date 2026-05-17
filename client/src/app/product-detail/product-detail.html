@@ -1,0 +1,146 @@
+
+<header>
+  <nav>
+    <div class="logo" routerLink="/" aria-label="Nyvra home">
+      <img src="assets/nyvra-mark.png" alt="" class="brand-mark">
+      <span>Nyvra</span>
+    </div>
+
+    <ul>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/products">Products</a></li>
+      <li><a routerLink="/" fragment="domains">Domains</a></li>
+      <li><a routerLink="/" fragment="featured-products">Featured</a></li>
+      <li><a routerLink="/" fragment="experience">Experience</a></li>
+      <li>
+        <a routerLink="/smart-finder" class="smart-finder-nav">
+          <span class="smart-dot"></span>
+          <span>Smart Finder</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-actions">
+      <div class="wishlist-icon" routerLink="/wishlist" aria-label="Open wishlist">
+        <span>❤️</span>
+        <span>{{ getWishlistCount() }}</span>
+      </div>
+      <a routerLink="/login" class="auth-btn" *ngIf="!isLoggedIn()">Login</a>
+    </div>
+  </nav>
+</header>
+
+<div *ngIf="loading" class="loading">
+  <div class="loading-ring"></div>
+  <span>Loading product profile...</span>
+</div>
+
+<div
+  *ngIf="product"
+  class="product-detail-page"
+>
+
+  <div class="product-detail-container">
+
+    <section class="product-gallery-panel">
+      <div class="image-stage">
+        <img
+          [src]="product.image"
+          [alt]="product.name"
+        >
+      </div>
+
+      <div class="quick-spec-strip">
+        <span>{{ product.ram }}GB RAM</span>
+        <span>{{ formatStorage(product.storage) }} Storage</span>
+        <span>{{ product.battery }}mAh</span>
+      </div>
+    </section>
+
+    <section class="product-info">
+      <a routerLink="/products" class="back-link">← Back to collection</a>
+
+      <div class="brand-row">
+        <span class="brand">{{ product.brand }}</span>
+        <span class="category-pill">{{ product.category }}</span>
+      </div>
+
+      <h1>{{ getDisplayName() }}</h1>
+
+      <p class="description">
+        {{ product.description }}
+      </p>
+
+      <div class="price-stock-row">
+        <h2 class="price">
+          {{ product.price | currency:'INR':'symbol':'1.0-0' }}
+        </h2>
+
+        <span class="stock" [class.low-stock]="product.stock <= 5">
+          {{ getStockLabel() }}
+        </span>
+      </div>
+
+      <div class="variant-panel" *ngIf="variants.length > 1">
+        <div class="variant-header">
+          <span>Choose Configuration</span>
+          <strong>{{ getVariantCountLabel() }}</strong>
+        </div>
+
+        <div class="variant-grid">
+          <button
+            type="button"
+            class="variant-chip"
+            *ngFor="let variant of variants"
+            [class.is-selected]="isSelectedVariant(variant)"
+            (click)="selectVariant(variant)"
+          >
+            <span>{{ getVariantLabel(variant) }}</span>
+            <strong>{{ getVariantSubLabel(variant) }}</strong>
+          </button>
+        </div>
+      </div>
+
+      <div class="score-grid">
+        <div class="score-card" *ngFor="let metric of getScoreMetrics()">
+          <span>{{ metric.label }}</span>
+          <strong>{{ metric.value }}</strong>
+        </div>
+      </div>
+
+      <div class="architecture-panel">
+        <div>
+          <span class="meta-label">Processor</span>
+          <strong>{{ product.processor }}</strong>
+        </div>
+        <div>
+          <span class="meta-label">Silicon Tier</span>
+          <strong>{{ product.processorTier }}</strong>
+        </div>
+        <div>
+          <span class="meta-label">Refresh Rate</span>
+          <strong>{{ product.refreshRate || 60 }}Hz</strong>
+        </div>
+        <div>
+          <span class="meta-label">Charging</span>
+          <strong>{{ product.chargingSpeed || 20 }}W</strong>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button
+          class="wishlist-btn"
+          [class.is-active]="isInWishlist(product._id)"
+          (click)="toggleWishlist(product); $event.stopPropagation()"
+        >
+          <span *ngIf="!isInWishlist(product._id)">Add to Wishlist</span>
+          <span *ngIf="isInWishlist(product._id)">Wishlisted</span>
+        </button>
+
+        <a routerLink="/smart-finder" class="finder-link">Compare Fit</a>
+      </div>
+    </section>
+
+  </div>
+
+</div>

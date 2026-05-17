@@ -1,0 +1,147 @@
+<div class="auth-shell register-shell">
+  <a class="auth-back" routerLink="/">
+    <span>&larr;</span>
+    <span>Back to Nyvra</span>
+  </a>
+
+  <main class="auth-stage">
+    <section class="auth-brand-panel">
+      <img src="assets/nyvra-mark.png" alt="" class="auth-hero-mark">
+      <span class="brand-word">Nyvra</span>
+      <p>Start with a focused account built around refined devices, saved choices, and a smoother buying flow.</p>
+    </section>
+
+    <form
+      *ngIf="step === 'details'"
+      class="auth-form-card"
+      (ngSubmit)="register()"
+    >
+      <div class="auth-card-header">
+        <img src="assets/nyvra-mark.png" alt="" class="auth-card-mark">
+        <span class="auth-kicker">Create Profile</span>
+        <h1>Join Nyvra</h1>
+        <p>Create your account and verify your email to continue.</p>
+      </div>
+
+      <label class="auth-field">
+        <span>Full Name</span>
+        <input
+          type="text"
+          placeholder="Your name"
+          name="name"
+          autocomplete="name"
+          [(ngModel)]="user.name"
+          required
+        >
+      </label>
+
+      <label class="auth-field">
+        <span>Email</span>
+        <input
+          type="email"
+          placeholder="you@example.com"
+          name="email"
+          autocomplete="email"
+          [(ngModel)]="user.email"
+          required
+        >
+      </label>
+
+      <label class="auth-field">
+        <span>Password</span>
+        <input
+          type="password"
+          placeholder="Create password"
+          name="password"
+          autocomplete="new-password"
+          [(ngModel)]="user.password"
+          required
+        >
+      </label>
+
+      <p *ngIf="errorMessage" class="auth-message error">
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="submit"
+        class="auth-primary-btn"
+        [disabled]="isSubmitting"
+      >
+        {{ isSubmitting ? 'Sending Code...' : 'Send Verification Code' }}
+      </button>
+
+      <p class="auth-switch">
+        Already have an account?
+        <a routerLink="/login">Login</a>
+      </p>
+    </form>
+
+    <form
+      *ngIf="step === 'verify'"
+      class="auth-form-card verify-card"
+      (ngSubmit)="verifyCode()"
+    >
+      <div class="auth-card-header">
+        <img src="assets/nyvra-mark.png" alt="" class="auth-card-mark">
+        <span class="auth-kicker">Email Verification</span>
+        <h1>Enter the code</h1>
+        <p>We sent a 6 digit code to {{ maskEmail(verificationEmail) }}.</p>
+      </div>
+
+      <label class="auth-field otp-field">
+        <span>Verification Code</span>
+        <input
+          type="text"
+          inputmode="numeric"
+          maxlength="6"
+          placeholder="000000"
+          name="otp"
+          autocomplete="one-time-code"
+          [(ngModel)]="otpCode"
+          required
+        >
+      </label>
+
+      <p *ngIf="statusMessage" class="auth-message success">
+        {{ statusMessage }}
+      </p>
+
+      <p *ngIf="errorMessage" class="auth-message error">
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="submit"
+        class="auth-primary-btn"
+        [disabled]="isVerifying"
+      >
+        {{ isVerifying ? 'Verifying...' : 'Verify & Continue' }}
+      </button>
+
+      <div class="verify-actions">
+        <button
+          type="button"
+          class="text-action"
+          (click)="resendCode()"
+          [disabled]="isResending || resendCountdown > 0"
+        >
+          <span *ngIf="resendCountdown === 0">
+            {{ isResending ? 'Sending...' : 'Resend code' }}
+          </span>
+          <span *ngIf="resendCountdown > 0">
+            Resend in {{ resendCountdown }}s
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="text-action"
+          (click)="changeEmail()"
+        >
+          Change email
+        </button>
+      </div>
+    </form>
+  </main>
+</div>

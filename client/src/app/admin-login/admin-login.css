@@ -1,0 +1,7 @@
+.admin-auth-shell .auth-kicker {
+  color: #ffca28;
+}
+
+.admin-auth-shell .auth-primary-btn:hover {
+  box-shadow: 0 16px 40px rgba(255, 202, 40, 0.14);
+}

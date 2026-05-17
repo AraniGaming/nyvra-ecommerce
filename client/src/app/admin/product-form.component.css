@@ -1,0 +1,267 @@
+:root {
+  --void-bg: #090a0f;
+  --console-panel: #111218;
+  --focus-neon: #007aff;
+  --deep-neon-azure: #00d2ff;
+  --input-bg: rgba(255, 255, 255, 0.02);
+  --text-white: #ffffff;
+  --text-dim: #8e929e;
+  --glass-edge: rgba(255, 255, 255, 0.06);
+}
+
+.form-studio-wrapper {
+  min-height: 100vh;
+  background-color: var(--void-bg);
+  color: var(--text-white);
+  padding: 100px 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-console-box {
+  width: 100%;
+  max-width: 640px;
+  background: var(--console-panel);
+  border: 1px solid var(--glass-edge);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+}
+
+/* FORM METRIC DIVIDERS */
+.form-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 25px 0 10px;
+}
+
+.form-section-divider span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--focus-neon);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.divider-line {
+  flex-grow: 1;
+  height: 1px;
+  background: var(--glass-edge);
+}
+
+.field-node select {
+  background: var(--input-bg);
+  border: 1px solid var(--glass-edge);
+  color: var(--text-white);
+  padding: 14px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  outline: none;
+}
+
+.field-node select focus {
+  border-color: var(--focus-neon);
+}
+
+/* Style range inputs to blend into the premium dark panel */
+.field-node input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(90deg, #00d2ff, #a855f7 70%, rgba(255, 255, 255, 0.09) 70%);
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+  margin: 12px 0;
+  padding: 0;
+  border: 0;
+}
+
+.field-node input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-white);
+  border: 2px solid #00d2ff;
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.28);
+  cursor: pointer;
+}
+
+.field-node input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: transparent;
+}
+
+.field-node input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #00d2ff;
+  border-radius: 50%;
+  background: var(--text-white);
+  box-shadow: 0 0 18px rgba(0, 210, 255, 0.28);
+  cursor: pointer;
+}
+
+/* HEADER NAVIGATION AND META LINKS */
+.form-header {
+  margin-bottom: 35px;
+}
+
+.back-dashboard-link {
+  color: var(--focus-neon);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+.back-dashboard-link:hover { color: #00c2ff; }
+
+.form-header h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+}
+
+.form-header p {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* THE STRUCTURED STUDIO INPUT NODES */
+.studio-form { display: flex; flex-direction: column; gap: 20px; }
+.input-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.field-node { display: flex; flex-direction: column; gap: 8px; }
+
+.field-node label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.field-node input,
+.field-node textarea {
+  background: var(--input-bg);
+  border: 1px solid var(--glass-edge);
+  color: var(--text-white);
+  padding: 14px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.field-node input:focus,
+.field-node textarea:focus {
+  border-color: var(--focus-neon);
+  background: rgba(0, 122, 255, 0.02);
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.15);
+}
+
+/* CURRENCY PREFIX INJECTOR OVERLAY */
+.price-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.price-input-wrapper .currency-tag {
+  position: absolute;
+  left: 14px;
+  color: var(--text-dim);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.price-input-wrapper input {
+  padding-left: 32px !important;
+  width: 100%;
+}
+
+/* CONSOLE SYSTEM ACTION DEPLOY TRIGGER */
+.console-submit-btn {
+  margin-top: 15px;
+  background: var(--text-white);
+  color: var(--void-bg);
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.console-submit-btn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(255,255,255,0.08);
+}
+
+@media (max-width: 600px) {
+  .input-split-grid { grid-template-columns: 1fr; gap: 20px; }
+  .form-console-box { padding: 2rem 1.5rem; }
+}
+
+/* ... All your existing form styles are up here ... */
+
+/* 📥 PASTE EVERYTHING BELOW ON THE VERY LAST LINE OF THE FILE */
+.showcase-checkbox-row {
+  margin-top: 5px;
+}
+.toggle-switch-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px 0;
+  user-select: none;
+}
+.switch-track {
+  width: 44px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-edge);
+  border-radius: 12px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.switch-handle {
+  width: 16px;
+  height: 16px;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+.switch-track.active {
+  background: var(--deep-neon-azure);
+  border-color: rgba(0, 210, 255, 0.3);
+}
+.switch-track.active .switch-handle {
+  transform: translateX(20px);
+}
+.switch-status-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  transition: color 0.2s ease;
+}
+.switch-track.active + .switch-status-label {
+  color: var(--deep-neon-azure);
+}

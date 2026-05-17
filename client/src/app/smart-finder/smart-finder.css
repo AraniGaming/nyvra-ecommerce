@@ -1,0 +1,467 @@
+:root {
+  --studio-bg: #090a0f;
+  --studio-surface: #111218;
+  --studio-cyan: #00d2ff;
+  --studio-purple: #a855f7;
+  --deep-neon-azure: #00d2ff;
+  --ultra-violet: #a855f7;
+  --success-emerald: #34c759;
+  --void-panel: #0b0c11;
+  --hover-surface: #111218;
+  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-border-heavy: rgba(255, 255, 255, 0.16);
+  --text-white: #ffffff;
+  --text-dim: #8e929e;
+  --studio-border: rgba(255, 255, 255, 0.06);
+}
+
+.finder-studio {
+  min-height: 100vh;
+  background-color: #090a0f;
+  color: #ffffff;
+  padding: 120px 2rem 60px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.finder-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 🚀 SECTION 1: HERO CONTAINER CARD */
+.hero-entry-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid var(--studio-border);
+  border-radius: 24px;
+  padding: 5rem 3rem;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+}
+
+.eyebrow-tag {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--studio-cyan);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.hero-entry-card h1 {
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.hero-entry-card p {
+  color: var(--text-dim);
+  font-size: 1.15rem;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.6;
+}
+
+.launch-btn {
+  background: #ffffff;
+  color: #090a0f;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(255, 255, 255, 0.15);
+}
+
+.launch-btn svg { width: 14px; height: 14px; }
+
+/* 🚀 SECTION 2: ARCHETYPE CARDS STEP */
+.step-header {
+  margin-bottom: 40px;
+}
+
+.step-counter {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.step-header h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0.5rem 0;
+}
+
+.step-header p {
+  color: var(--text-dim);
+}
+
+.archetype-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.archetype-card {
+  background: var(--studio-surface);
+  border: 1px solid var(--studio-border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.card-glow-overlay {
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.03;
+  transition: opacity 0.3s ease;
+}
+
+.card-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+.archetype-card h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem; }
+.archetype-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+
+.archetype-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.archetype-card:hover .card-glow-overlay { opacity: 0.15; }
+
+.archetype-card.selected {
+  border-color: var(--studio-cyan);
+  background: rgba(0, 210, 255, 0.02);
+}
+.archetype-card.selected .card-glow-overlay { opacity: 0.25; }
+
+/* 🚀 SECTION 3: PRIORITY CONFIG SLIDERS PANEL */
+.config-split-layout {
+  background: var(--studio-surface);
+  border: 1px solid var(--studio-border);
+  border-radius: 20px;
+  padding: 2.5rem;
+}
+
+.slider-group {
+  margin-bottom: 2rem;
+}
+
+.slider-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.slider-meta label { font-size: 0.95rem; }
+.value-badge { font-size: 0.88rem; color: var(--studio-cyan); }
+.value-badge.price-badge { color: #34c759; font-size: 1.1rem; }
+
+input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+
+  background: rgba(255,255,255,0.08);
+  height: 6px;
+  border-radius: 3px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+input[type="range"]::-webkit-slider-thumb:active { transform: scale(1.2); }
+
+.range-edge-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.budget-group {
+  background: rgba(255,255,255,0.02);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* 🚀 SECTION 4: EXPANDABLE ADVANCED MATRIX BLOCK */
+.advanced-accordion { margin: 2rem 0; }
+.accordion-toggle {
+  background: transparent; border: none; color: var(--text-dim);
+  display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; padding: 0.5rem 0;
+}
+.accordion-toggle svg { width: 14px; height: 14px; transition: transform 0.3s ease; }
+.accordion-toggle svg.open { transform: rotate(180deg); }
+
+.accordion-content {
+  background: rgba(0,0,0,0.15); border-radius: 12px; padding: 1.5rem; margin-top: 1rem;
+}
+.advanced-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; }
+.select-field { display: flex; flex-direction: column; gap: 0.5rem; }
+.select-field label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; }
+.select-field select {
+  background: #171821; border: 1px solid var(--studio-border); color: #fff;
+  padding: 0.75rem; border-radius: 8px; outline: none; font-size: 0.9rem;
+}
+
+.action-next-step {
+  width: 100%; background: var(--studio-cyan); color: #000; border: none;
+  padding: 1rem; border-radius: 12px; font-weight: 700; font-size: 1rem;
+  cursor: pointer; margin-top: 1rem; transition: background 0.2s ease;
+}
+.action-next-step:hover { background: #00bce6; }
+
+/* 🚀 SECTION 5: LIVE MATCHING DISPLAY GRID rows */
+.results-layout-header { margin-bottom: 35px; }
+.back-link-btn {
+  background: transparent; border: none; color: var(--studio-cyan);
+  font-weight: 600; cursor: pointer; margin-bottom: 1rem;
+}
+
+/* Update the Card foundational styling to introduce the colored liquid effect */
+.match-row-card {
+  background: var(--void-panel) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 🎨 THE COLOR MESH OVERLAY INJECTOR */
+.match-row-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  /* Creates a vibrant purple to teal gradient mesh in the background */
+  background: linear-gradient(135deg, var(--ultra-violet), var(--deep-neon-azure));
+  filter: blur(50px);
+  opacity: 0.03; /* Kept very low but adds a critical color depth */
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* 🚀 INTERACTIVE PHYSICAL REACTION: Increase color on hover */
+.match-row-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--glass-border-heavy) !important;
+  background: var(--hover-surface) !important;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
+
+.match-row-card:hover::before {
+  opacity: 0.1; /* The card glows richer when interacted with */
+}
+
+/* 🌈 DYNAMIC VECTOR COLOR-SHIFTING PROGRESS RING */
+.match-score-ring {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+
+.match-score-ring::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: #090a0f;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+}
+
+.match-score-ring span {
+  position: relative;
+  z-index: 1;
+}
+
+/* We will assign a dynamic variable to control the ring color dynamically in the component later */
+.percentage-metric {
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.match-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+/* We must make the central text labels vibrant now to stand out from the gray data bullets */
+.match-card-meta h3 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-white) !important; /* Force to off-white standard */
+  margin: 2px 0 10px;
+}
+
+.brand-caps {
+  font-size: 0.75rem;
+  color: var(--ultra-violet); /* Shift brand labels to Ultra Violet for accent contrast */
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Price labels should indicate success/healthy pricing metrics */
+.price-indicator {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--success-emerald);
+}
+
+.percentage-metric { font-size: 1.35rem; font-weight: 800; line-height: 1; }
+.match-label { font-size: 0.65rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700; }
+
+.match-card-meta { flex-grow: 1; }
+.brand-caps { font-size: 0.75rem; color: var(--studio-cyan); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+.match-card-meta h3 { font-size: 1.45rem; font-weight: 700; margin: 2px 0 10px; }
+
+.match-tier-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 0.9rem;
+}
+
+.match-tier,
+.spec-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.match-tier {
+  color: var(--studio-cyan);
+  border-color: rgba(0, 210, 255, 0.22);
+  background: rgba(0, 210, 255, 0.08);
+}
+
+.trust-bullet-matrix { list-style: none; display: grid; gap: 0.4rem; }
+.trust-bullet-matrix li { font-size: 0.88rem; color: var(--text-dim); display: flex; align-items: center; gap: 0.5rem; }
+.check-vector { color: #34c759; font-weight: 800; }
+
+.score-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.9rem;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.match-action-hub { display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem; }
+.price-indicator { font-size: 1.35rem; font-weight: 800; }
+.view-profile-btn {
+  background: #ffffff; color: #090a0f; border: none; padding: 0.7rem 1.5rem;
+  border-radius: 8px; font-weight: 600; font-size: 0.88rem; cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.view-profile-btn:hover { opacity: 0.9; }
+
+.loading-matrix { text-align: center; padding: 5rem 0; color: var(--text-dim); }
+.matrix-ring {
+  width: 32px; height: 32px; border: 2px solid rgba(255,255,255,0.05);
+  border-top-color: var(--studio-cyan); border-radius: 50%; margin: 0 auto 1rem;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .match-row-card { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .match-action-hub { width: 100%; align-items: flex-start; flex-direction: row; justify-content: space-between; }
+}
+
+/* 🔥 SEAMLESS LIVE RESULTS MIXIN */
+.live-results-section {
+  margin-top: 50px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.results-divider {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.results-divider h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.divider-line {
+  flex-grow: 1;
+  height: 1px;
+  background: var(--studio-border);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,56 @@
+<div class="auth-shell">
+  <a class="auth-back" routerLink="/">
+    <span>&larr;</span>
+    <span>Back to Nyvra</span>
+  </a>
+
+  <main class="auth-stage">
+    <section class="auth-brand-panel">
+      <img src="assets/nyvra-mark.png" alt="" class="auth-hero-mark">
+      <span class="brand-word">Nyvra</span>
+      <p>A quieter way to choose serious devices, tuned for premium hardware and clean decisions.</p>
+    </section>
+
+    <form class="auth-form-card" (ngSubmit)="login()">
+      <div class="auth-card-header">
+        <img src="assets/nyvra-mark.png" alt="" class="auth-card-mark">
+        <span class="auth-kicker">Member Access</span>
+        <h1>Welcome Back</h1>
+        <p>Sign in to continue your Nyvra session.</p>
+      </div>
+
+      <label class="auth-field">
+        <span>Email</span>
+        <input
+          type="email"
+          placeholder="you@example.com"
+          name="email"
+          autocomplete="email"
+          [(ngModel)]="email"
+          required
+        >
+      </label>
+
+      <label class="auth-field">
+        <span>Password</span>
+        <input
+          type="password"
+          placeholder="Enter password"
+          name="password"
+          autocomplete="current-password"
+          [(ngModel)]="password"
+          required
+        >
+      </label>
+
+      <button type="submit" class="auth-primary-btn">
+        Login
+      </button>
+
+      <p class="auth-switch">
+        New to Nyvra?
+        <a routerLink="/register">Create account</a>
+      </p>
+    </form>
+  </main>
+</div>

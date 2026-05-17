@@ -1,0 +1,51 @@
+<div class="auth-shell admin-auth-shell">
+  <a class="auth-back" routerLink="/">
+    <span>&larr;</span>
+    <span>Back to Nyvra</span>
+  </a>
+
+  <main class="auth-stage">
+    <section class="auth-brand-panel">
+      <img src="assets/nyvra-mark.png" alt="" class="auth-hero-mark">
+      <span class="brand-word">Nyvra</span>
+      <p>Administrative access for keeping the catalog sharp, current, and ready for customers.</p>
+    </section>
+
+    <form class="auth-form-card" (ngSubmit)="login()">
+      <div class="auth-card-header">
+        <img src="assets/nyvra-mark.png" alt="" class="auth-card-mark">
+        <span class="auth-kicker">Admin Console</span>
+        <h1>Secure Login</h1>
+        <p>Sign in with your administrator credentials.</p>
+      </div>
+
+      <label class="auth-field">
+        <span>Email</span>
+        <input
+          type="email"
+          placeholder="admin@example.com"
+          name="email"
+          autocomplete="email"
+          [(ngModel)]="email"
+          required
+        >
+      </label>
+
+      <label class="auth-field">
+        <span>Password</span>
+        <input
+          type="password"
+          placeholder="Enter password"
+          name="password"
+          autocomplete="current-password"
+          [(ngModel)]="password"
+          required
+        >
+      </label>
+
+      <button type="submit" class="auth-primary-btn">
+        Login
+      </button>
+    </form>
+  </main>
+</div>
