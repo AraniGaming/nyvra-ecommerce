@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router'; // 👈 Imported native Angular router
 import { ProductService } from '../services/product.service';
 import { AuthService } from '../services/auth.service';
@@ -9,6 +10,7 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule
   ],
   templateUrl: './admin.html',
@@ -16,6 +18,13 @@ import { AuthService } from '../services/auth.service';
 })
 export class AdminComponent implements OnInit {
   products: any[] = [];
+  newAdmin = {
+    email: '',
+    password: ''
+  };
+  creatingAdmin = false;
+  adminCreateMessage = '';
+  adminCreateError = '';
 
   constructor(
     private productService: ProductService,
@@ -62,6 +71,47 @@ export class AdminComponent implements OnInit {
           error: (err) => console.error(err)
         });
     }
+  }
+
+  createAdminAccount() {
+    this.adminCreateMessage = '';
+    this.adminCreateError = '';
+
+    const email = this.newAdmin.email.trim().toLowerCase();
+    const password = this.newAdmin.password;
+
+    if (!email || !password) {
+      this.adminCreateError = 'Enter an email and password.';
+      return;
+    }
+
+    if (password.length < 8) {
+      this.adminCreateError = 'Password must be at least 8 characters.';
+      return;
+    }
+
+    this.creatingAdmin = true;
+
+    this.authService
+      .createAdmin({ email, password })
+      .subscribe({
+        next: (res: any) => {
+          this.adminCreateMessage =
+            res?.message || 'Admin account created.';
+          this.newAdmin = {
+            email: '',
+            password: ''
+          };
+          this.creatingAdmin = false;
+          this.cd.detectChanges();
+        },
+        error: (err) => {
+          this.adminCreateError =
+            err?.error?.message || 'Could not create admin account.';
+          this.creatingAdmin = false;
+          this.cd.detectChanges();
+        }
+      });
   }
 
 toggleFeaturedStatus(product: any): void {

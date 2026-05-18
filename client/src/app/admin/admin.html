@@ -22,6 +22,52 @@
     </button>
   </header>
 
+  <section class="admin-account-panel">
+    <div class="admin-account-copy">
+      <span class="sub-tag">ACCESS CONTROL</span>
+      <h2>Add Admin Account</h2>
+      <p>Create another administrator login for the Nyvra command core.</p>
+    </div>
+
+    <form class="admin-account-form" (ngSubmit)="createAdminAccount()">
+      <label>
+        <span>Email</span>
+        <input
+          type="email"
+          name="adminEmail"
+          [(ngModel)]="newAdmin.email"
+          placeholder="new-admin@example.com"
+          autocomplete="off"
+          required
+        >
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input
+          type="password"
+          name="adminPassword"
+          [(ngModel)]="newAdmin.password"
+          placeholder="Minimum 8 characters"
+          autocomplete="new-password"
+          required
+        >
+      </label>
+
+      <button type="submit" class="admin-create-btn" [disabled]="creatingAdmin">
+        <span *ngIf="!creatingAdmin">Create Admin</span>
+        <span *ngIf="creatingAdmin">Creating...</span>
+      </button>
+
+      <p *ngIf="adminCreateMessage" class="admin-form-message success">
+        {{ adminCreateMessage }}
+      </p>
+      <p *ngIf="adminCreateError" class="admin-form-message error">
+        {{ adminCreateError }}
+      </p>
+    </form>
+  </section>
+
   <div class="table-blur-wrapper">
     <table class="studio-data-table">
       <thead>

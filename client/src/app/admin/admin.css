@@ -147,6 +147,111 @@
 .stock-indicator.low-stock .stock-count { color: var(--warning-amber); font-weight: 600; }
 .prime-add-btn svg { width: 16px; height: 16px; }
 
+.admin-account-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 32px;
+  padding: 1.5rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(0, 122, 255, 0.08), transparent 38%),
+    rgba(17, 18, 24, 0.72);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+}
+
+.admin-account-copy h2 {
+  margin: 0 0 0.55rem;
+  color: var(--text-white);
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+.admin-account-copy p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.admin-account-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  gap: 0.9rem;
+  align-items: end;
+}
+
+.admin-account-form label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.admin-account-form label span {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-account-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  outline: none;
+  color: var(--text-white);
+  background: rgba(9, 10, 15, 0.76);
+  font: inherit;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.admin-account-form input:focus {
+  border-color: rgba(0, 210, 255, 0.56);
+  box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.08);
+}
+
+.admin-create-btn {
+  min-height: 44px;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 8px;
+  color: #090a0f;
+  background: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-create-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+.admin-form-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.admin-form-message.success {
+  color: #6ee7b7;
+  border: 1px solid rgba(52, 199, 89, 0.18);
+  background: rgba(52, 199, 89, 0.1);
+}
+
+.admin-form-message.error {
+  color: #ff8a8a;
+  border: 1px solid rgba(255, 59, 48, 0.18);
+  background: rgba(255, 59, 48, 0.1);
+}
+
 /* REENGINEERED COMMAND DATA SHEET TABLE */
 .table-blur-wrapper {
   background: var(--panel-surface);
@@ -306,4 +411,15 @@
   fill: var(--warning-amber) !important;
   color: var(--warning-amber) !important;
   filter: drop-shadow(0 0 8px rgba(255, 202, 40, 0.5)) !important;
+}
+
+@media (max-width: 900px) {
+  .admin-account-panel,
+  .admin-account-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-create-btn {
+    width: 100%;
+  }
 }
