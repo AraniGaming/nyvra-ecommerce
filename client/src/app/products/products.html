@@ -8,8 +8,8 @@
     <ul class="nav-links">
       <li><a routerLink="/">Home</a></li>
       <li><a routerLink="/products" class="active">Products</a></li>
-      <li><a routerLink="/" fragment="domains">Domains</a></li>
       <li><a routerLink="/" fragment="featured-products">Featured</a></li>
+      <li><a routerLink="/" fragment="domains">Domains</a></li>
       <li><a routerLink="/" fragment="experience">Experience</a></li>
       <li>
         <a routerLink="/smart-finder" class="smart-finder-nav">
@@ -30,12 +30,156 @@
 
 <main class="products-page">
   <div class="page-container">
-    
-    <div class="products-header">
-      <span class="header-tag">HARDWARE MATRIX</span>
-      <h1>Our Complete Collection</h1>
-      <p>Discover hyper-calibrated flagships engineered for premium workflow performance.</p>
-      <div class="header-accent-bar"></div>
+    <section class="products-hero">
+      <span class="header-tag">Hardware Matrix</span>
+      <h1>Find Your Next Phone</h1>
+      <p>Search by brand, specs, storage, battery, display, and performance in one refined product dashboard.</p>
+
+      <div class="command-search-shell" [class.is-focused]="searchFocused">
+        <div class="command-search-box">
+          <div class="search-icon-wrap" [class.is-loading]="typingSearch">
+            <svg *ngIf="!typingSearch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="16.65" y1="16.65" x2="21" y2="21"></line>
+            </svg>
+            <span *ngIf="typingSearch" class="search-loader"></span>
+          </div>
+
+          <input
+            type="search"
+            [placeholder]="placeholderExamples[placeholderIndex]"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="onSearchInput($event)"
+            (focus)="searchFocused = true"
+            (blur)="searchFocused = false"
+            aria-label="Search products"
+          >
+
+          <button
+            *ngIf="searchTerm"
+            type="button"
+            class="search-clear"
+            (mousedown)="$event.preventDefault()"
+            (click)="removeFilter('search')"
+            aria-label="Clear search"
+          >
+            ×
+          </button>
+        </div>
+
+        <div
+          class="search-suggestions"
+          *ngIf="searchFocused && getSearchSuggestions().length > 0"
+          (mousedown)="$event.preventDefault()"
+        >
+          <button
+            type="button"
+            class="suggestion-row"
+            *ngFor="let suggestion of getSearchSuggestions()"
+            (click)="selectSuggestion(suggestion)"
+          >
+            <span class="suggestion-icon">{{ suggestion.type === 'brand' ? 'B' : 'P' }}</span>
+            <span>
+              <strong [innerHTML]="highlightMatch(suggestion.title)"></strong>
+              <small>{{ suggestion.subtitle }}</small>
+              <em>{{ suggestion.meta }}</em>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="sticky-control-deck">
+      <div class="category-tabs" aria-label="Product categories">
+        <button
+          type="button"
+          *ngFor="let tab of categoryTabs"
+          [class.is-active]="categoryTab === tab.id"
+          (click)="setCategoryTab(tab.id)"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
+
+      <div class="quick-chip-row" aria-label="Quick filters">
+        <button
+          type="button"
+          class="quick-chip"
+          *ngFor="let chip of quickChips"
+          [class.is-active]="isQuickChipActive(chip)"
+          (click)="toggleQuickChip(chip)"
+        >
+          <span>{{ chip.label }}</span>
+          <strong>{{ getQuickChipCount(chip) }}</strong>
+        </button>
+      </div>
+
+      <div class="results-toolbar">
+        <div class="results-copy">
+          <strong>{{ getResultsTitle() }}</strong>
+          <span *ngIf="activeFilterCount > 0">Filters active: {{ activeFilterCount }}</span>
+          <span *ngIf="activeFilterCount === 0">Sorted by curated popularity</span>
+        </div>
+
+        <div class="toolbar-actions">
+          <button type="button" class="mobile-filter-button" (click)="openFilters()">
+            Refine results
+            <span *ngIf="activeFilterCount > 0">{{ activeFilterCount }}</span>
+          </button>
+
+          <label class="sort-control">
+            <span>Sort</span>
+            <select [(ngModel)]="sortMode" (ngModelChange)="setSortMode($event)">
+              <option value="popular">Popularity</option>
+              <option value="priceLow">Price low to high</option>
+              <option value="priceHigh">Price high to low</option>
+              <option value="newest">Newest</option>
+              <option value="rating">Rating</option>
+            </select>
+          </label>
+
+          <div class="view-toggle" aria-label="View mode">
+            <button
+              type="button"
+              [class.is-active]="viewMode === 'comfort'"
+              (click)="setViewMode('comfort')"
+              aria-label="Comfort grid"
+            >
+              ▦
+            </button>
+            <button
+              type="button"
+              [class.is-active]="viewMode === 'compact'"
+              (click)="setViewMode('compact')"
+              aria-label="Compact grid"
+            >
+              ▥
+            </button>
+            <button
+              type="button"
+              [class.is-active]="viewMode === 'list'"
+              (click)="setViewMode('list')"
+              aria-label="List view"
+            >
+              ☰
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="active-filter-bar" *ngIf="activeFilterCount > 0">
+      <span>Showing {{ products.length }} phones matching:</span>
+      <div class="active-filter-list">
+        <button
+          type="button"
+          *ngFor="let filter of activeFilters"
+          (click)="removeFilter(filter.key)"
+        >
+          {{ filter.label }} <span>×</span>
+        </button>
+      </div>
+      <button type="button" class="clear-all" (click)="clearAllFilters()">Clear all</button>
     </div>
 
     <div *ngIf="loading" class="matrix-loader-box">
@@ -43,44 +187,290 @@
       <p>Fetching active inventory profiles...</p>
     </div>
 
-    <div *ngIf="!loading" class="products-grid">
-      <div 
-        *ngFor="let product of products" 
-        class="product-premium-card"
-        [routerLink]="['/products', product._id]"
-      >
-        <button
-          class="floating-wishlist-toggle"
-          [class.is-favorite]="isInWishlist(product._id)"
-          (click)="toggleWishlist(product); $event.stopPropagation()"
-        >
-          <svg viewBox="0 0 24 24" [attr.fill]="isInWishlist(product._id) ? '#ff2d55' : 'none'" stroke="currentColor" stroke-width="2">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-          </svg>
-        </button>
+    <section class="results-layout" *ngIf="!loading">
+      <div class="drawer-scrim" *ngIf="filterDrawerOpen" (click)="closeFilters()"></div>
 
-        <div class="premium-img-container">
-          <img [src]="product.image" [alt]="product.name" loading="lazy">
+      <aside class="filter-panel" [class.drawer-open]="filterDrawerOpen">
+        <div class="filter-drag-handle"></div>
+        <div class="filter-panel-top">
+          <div>
+            <span>Refine</span>
+            <h2>Filters</h2>
+          </div>
+          <button type="button" class="drawer-close" (click)="closeFilters()" aria-label="Close filters">×</button>
         </div>
 
-        <div class="premium-card-details">
-          <span class="product-brand-tag">{{ product.brand }}</span>
-          <h3 class="product-display-name">{{ product.name }}</h3>
-          <p class="product-short-description">{{ product.description }}</p>
-          
-         <div class="premium-card-footer">
-  <span class="product-price-label">
-    <span style="font-size: 0.8rem; color: #8e929e; font-weight: 500; display: block; margin-bottom: -2px;">From</span>
-    {{ product.price | currency:'INR':'symbol':'1.0-0' }}
-  </span>
-  <span class="explore-micro-cta">
-    <span>Configure</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-  </span>
-</div>
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('brand')">
+            <span>Brand</span>
+            <strong>{{ isSectionOpen('brand') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('brand')">
+            <button
+              type="button"
+              class="filter-line"
+              [class.is-active]="selectedBrand === 'all'"
+              (click)="setBrand('all')"
+            >
+              <span>All Brands</span>
+              <strong>{{ allProducts.length }}</strong>
+            </button>
+            <button
+              type="button"
+              class="filter-line"
+              *ngFor="let brand of getBrandOptions()"
+              [class.is-active]="selectedBrand === brand"
+              (click)="setBrand(brand)"
+            >
+              <span>{{ brand }}</span>
+              <strong>{{ getFilterCount('selectedBrand', brand) }}</strong>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('price')">
+            <span>Price</span>
+            <strong>{{ isSectionOpen('price') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('price')">
+            <div class="price-slider-card">
+              <div class="price-slider-head">
+                <span>Budget ceiling</span>
+                <strong>{{ formatPriceCap() }}</strong>
+              </div>
+              <input
+                type="range"
+                min="10000"
+                [max]="maxPriceLimit"
+                step="5000"
+                [ngModel]="priceLimit"
+                (ngModelChange)="onPriceLimitChange($event)"
+                [style.background]="getPriceSliderBackground()"
+              >
+              <div class="price-scale">
+                <span>₹10k<br><em>Budget</em></span>
+                <span>₹60k<br><em>Premium</em></span>
+                <span>₹2,50,000+<br><em>Flagship</em></span>
+              </div>
+            </div>
+
+            <div class="price-filter-grid">
+              <button
+                type="button"
+                *ngFor="let price of priceFilters"
+                [class.is-active]="selectedPrice === price.id"
+                (click)="setPriceFilter(price.id)"
+              >
+                <span>{{ price.label }}</span>
+                <small>{{ price.subtitle }}</small>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('hardware')">
+            <span>RAM & Storage</span>
+            <strong>{{ isSectionOpen('hardware') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('hardware')">
+            <span class="mini-label">RAM</span>
+            <div class="pill-grid">
+              <button
+                type="button"
+                *ngFor="let ram of ramOptions"
+                [class.is-active]="selectedRam === ram"
+                (click)="setRam(ram)"
+              >
+                {{ ram ? ram + 'GB' : 'Any' }}
+              </button>
+            </div>
+
+            <span class="mini-label">Storage</span>
+            <div class="storage-card-grid">
+              <button
+                type="button"
+                *ngFor="let storage of storageOptions"
+                [class.is-active]="selectedStorage === storage"
+                (click)="setStorage(storage)"
+              >
+                {{ storage ? formatStorage(storage) : 'Any' }}
+              </button>
+            </div>
+
+            <span class="mini-label">Battery</span>
+            <div class="battery-option-grid">
+              <button
+                type="button"
+                *ngFor="let battery of batteryOptions"
+                [class.is-active]="selectedBattery === battery.value"
+                (click)="setBattery(battery.value)"
+              >
+                <span>{{ battery.icon }}</span>
+                {{ battery.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('display')">
+            <span>Display</span>
+            <strong>{{ isSectionOpen('display') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('display')">
+            <div class="pill-grid two-col">
+              <button
+                type="button"
+                *ngFor="let display of displayOptions"
+                [class.is-active]="selectedDisplay === display.id"
+                (click)="setDisplay(display.id)"
+              >
+                {{ display.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('camera')">
+            <span>Camera</span>
+            <strong>{{ isSectionOpen('camera') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('camera')">
+            <div class="pill-grid two-col">
+              <button
+                type="button"
+                *ngFor="let camera of cameraOptions"
+                [class.is-active]="selectedCamera === camera.value"
+                (click)="setCamera(camera.value)"
+              >
+                {{ camera.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('processor')">
+            <span>Processor</span>
+            <strong>{{ isSectionOpen('processor') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('processor')">
+            <div class="pill-grid two-col">
+              <button
+                type="button"
+                *ngFor="let tier of processorTiers"
+                [class.is-active]="selectedProcessorTier === tier.id"
+                (click)="setProcessorTier(tier.id)"
+              >
+                {{ tier.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button type="button" class="filter-section-toggle" (click)="toggleSection('network')">
+            <span>Network</span>
+            <strong>{{ isSectionOpen('network') ? '−' : '+' }}</strong>
+          </button>
+          <div class="filter-section-body" *ngIf="isSectionOpen('network')">
+            <div class="pill-grid two-col">
+              <button
+                type="button"
+                *ngFor="let network of networkOptions"
+                [class.is-active]="selectedNetwork === network.id"
+                (click)="setNetwork(network.id)"
+              >
+                {{ network.label }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-footer">
+          <button type="button" (click)="closeFilters()">Show {{ products.length }} phones</button>
+        </div>
+      </aside>
+
+      <div class="products-results">
+        <div *ngIf="filtering" class="skeleton-grid">
+          <div class="skeleton-card" *ngFor="let item of [1, 2, 3, 4, 5, 6]"></div>
+        </div>
+
+        <div *ngIf="!filtering && products.length === 0" class="empty-state">
+          <div class="empty-orbit">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="20" y="8" width="24" height="48" rx="5"></rect>
+              <circle cx="32" cy="48" r="1.5"></circle>
+              <path d="M11 18c9-8 33-8 42 0"></path>
+              <path d="M14 46c10 7 26 7 36 0"></path>
+            </svg>
+          </div>
+          <h2>No perfect match found</h2>
+          <p>Try removing one filter or widening your price range.</p>
+          <div class="empty-actions">
+            <button type="button" (click)="clearAllFilters()">Clear filters</button>
+            <button type="button" (click)="removeFilter('priceLimit')">Show nearest matches</button>
+          </div>
+        </div>
+
+        <div
+          *ngIf="!filtering && products.length > 0"
+          class="products-grid"
+          [class.compact-grid]="viewMode === 'compact'"
+          [class.list-view]="viewMode === 'list'"
+        >
+          <article
+            *ngFor="let product of products; trackBy: trackByProduct"
+            class="product-premium-card"
+            [routerLink]="['/products', product._id]"
+          >
+            <button
+              class="floating-wishlist-toggle"
+              [class.is-favorite]="isInWishlist(product._id)"
+              (click)="toggleWishlist(product); $event.stopPropagation()"
+              aria-label="Toggle wishlist"
+            >
+              <svg viewBox="0 0 24 24" [attr.fill]="isInWishlist(product._id) ? '#ff2d55' : 'none'" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
+
+            <div class="premium-img-container">
+              <img [src]="product.image" [alt]="product.name" loading="lazy">
+            </div>
+
+            <div class="premium-card-details">
+              <div class="card-kicker-row">
+                <span class="product-brand-tag">{{ product.brand }}</span>
+                <span class="configuration-count">{{ getVariantCountLabel(product) }}</span>
+              </div>
+
+              <h3 class="product-display-name" [innerHTML]="highlightMatch(product.name)"></h3>
+              <p class="product-short-description">{{ product.description }}</p>
+              <p class="product-spec-line">{{ getProductSubtitle(product) }}</p>
+
+              <div class="spec-badge-row">
+                <span *ngFor="let badge of getSpecBadges(product)" [innerHTML]="highlightMatch(badge)"></span>
+              </div>
+
+              <div class="premium-card-footer">
+                <span class="product-price-label">
+                  <small>From</small>
+                  {{ product.price | currency:'INR':'symbol':'1.0-0' }}
+                </span>
+                <span class="explore-micro-cta">
+                  <span>View Details</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </span>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
-    </div>
-
+    </section>
   </div>
 </main>
