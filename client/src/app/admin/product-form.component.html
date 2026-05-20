@@ -1,6 +1,5 @@
 <div class="form-studio-wrapper">
   <div class="form-console-box">
-    
     <header class="form-header">
       <a
         routerLink="/admin"
@@ -8,31 +7,76 @@
         class="back-dashboard-link"
       >← Abort to Command Core</a>
       <h1>{{ isEdit ? 'Modify Asset Profile' : 'Provision New Hardware' }}</h1>
-      <p>Configure device deployment matrix parameters below.</p>
+      <p>Every catalogue field now maps directly into the product database.</p>
     </header>
 
     <form (ngSubmit)="submitForm()" class="studio-form">
-      
       <div class="form-section-divider">
-        <span>01 / Core Metadata</span>
+        <span>01 / Catalogue Identity</span>
         <div class="divider-line"></div>
+      </div>
+
+      <div class="generated-name-card">
+        <span>Generated product name</span>
+        <strong>{{ getGeneratedName() }}</strong>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Brand</label>
+          <input type="text" placeholder="Apple" [(ngModel)]="product.brand" name="brand" required autocomplete="off">
+        </div>
+        <div class="field-node">
+          <label>Model</label>
+          <input type="text" placeholder="iPhone 17 Pro Max" [(ngModel)]="product.model" name="model" required autocomplete="off">
+        </div>
+        <div class="field-node">
+          <label>Variant Name</label>
+          <input type="text" placeholder="12GB + 256GB" [(ngModel)]="product.variantName" name="variantName" required autocomplete="off">
+        </div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Price</label>
+          <div class="price-input-wrapper">
+            <span class="currency-tag">₹</span>
+            <input type="number" placeholder="147900" [(ngModel)]="product.price" name="price" required>
+          </div>
+        </div>
+        <div class="field-node">
+          <label>Availability Status</label>
+          <select [(ngModel)]="product.availabilityStatus" name="availabilityStatus" required>
+            <option *ngFor="let option of availabilityOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div class="field-node">
+          <label>Condition</label>
+          <select [(ngModel)]="product.condition" name="condition" required>
+            <option *ngFor="let option of conditionOptions" [value]="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Launch Year</label>
+          <input type="number" placeholder="2026" [(ngModel)]="product.launchYear" name="launchYear" required>
+        </div>
+        <div class="field-node">
+          <label>Category</label>
+          <input type="text" placeholder="smartphone" [(ngModel)]="product.category" name="category" required>
+        </div>
+        <div class="field-node">
+          <label>Stock Units</label>
+          <input type="number" placeholder="50" [(ngModel)]="product.stock" name="stock" required>
+        </div>
       </div>
 
       <div class="input-row-group">
         <div class="field-node">
-          <label>Product Display Name</label>
-          <input type="text" placeholder="e.g., iPhone 15 Pro Max" [(ngModel)]="product.name" name="name" required autocomplete="off">
-        </div>
-      </div>
-
-      <div class="input-split-grid">
-        <div class="field-node">
-          <label>Brand Manufacturer</label>
-          <input type="text" placeholder="e.g., Apple" [(ngModel)]="product.brand" name="brand" required>
-        </div>
-        <div class="field-node">
-          <label>Category Domain</label>
-          <input type="text" placeholder="e.g., smartphone" [(ngModel)]="product.category" name="category" required>
+          <label>Image URL</label>
+          <input type="url" placeholder="https://links/device.png" [(ngModel)]="product.image" name="image" required>
         </div>
       </div>
 
@@ -50,22 +94,8 @@
 
       <div class="input-row-group">
         <div class="field-node">
-          <label>Asset Image URL</label>
-          <input type="url" placeholder="https://links/device.png" [(ngModel)]="product.image" name="image" required>
-        </div>
-      </div>
-
-      <div class="input-split-grid">
-        <div class="field-node">
-          <label>Valuation Cost (INR)</label>
-          <div class="price-input-wrapper">
-            <span class="currency-tag">₹</span>
-            <input type="number" placeholder="139900" [(ngModel)]="product.price" name="price" required>
-          </div>
-        </div>
-        <div class="field-node">
-          <label>Available Stock Allocation</label>
-          <input type="number" placeholder="50" [(ngModel)]="product.stock" name="stock" required>
+          <label>Description</label>
+          <textarea placeholder="Enter product description..." [(ngModel)]="product.description" name="description" rows="4" required></textarea>
         </div>
       </div>
 
@@ -74,39 +104,182 @@
         <div class="divider-line"></div>
       </div>
 
-      <div class="input-split-grid">
+      <div class="input-three-grid">
         <div class="field-node">
-          <label>System RAM (GB)</label>
-          <input type="number" placeholder="8" [(ngModel)]="product.ram" name="ram" required>
+          <label>RAM (GB)</label>
+          <input type="number" placeholder="12" [(ngModel)]="product.ram" name="ram" required>
         </div>
         <div class="field-node">
-          <label>Internal Storage (GB)</label>
+          <label>Storage (GB)</label>
           <input type="number" placeholder="256" [(ngModel)]="product.storage" name="storage" required>
         </div>
-      </div>
-
-      <div class="input-split-grid">
         <div class="field-node">
-          <label>Processor Engine Name</label>
-          <input type="text" placeholder="e.g., A17 Pro Bionic" [(ngModel)]="product.processor" name="processor" required>
-        </div>
-        <div class="field-node">
-          <label>Battery Capacity (mAh)</label>
-          <input type="number" placeholder="4441" [(ngModel)]="product.battery" name="battery" required>
+          <label>Battery (mAh)</label>
+          <input type="number" placeholder="4823" [(ngModel)]="product.battery" name="battery" required>
         </div>
       </div>
 
-      <div class="input-split-grid">
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Charging Speed (W)</label>
+          <input type="number" placeholder="20" [(ngModel)]="product.chargingSpeed" name="chargingSpeed" required>
+        </div>
+        <div class="field-node">
+          <label>Refresh Rate (Hz)</label>
+          <input type="number" placeholder="120" [(ngModel)]="product.refreshRate" name="refreshRate" required>
+        </div>
+        <div class="field-node">
+          <label>Network</label>
+          <select [(ngModel)]="product.network" name="network" required>
+            <option *ngFor="let network of networkOptions" [value]="network">{{ network }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Display Size (inch)</label>
+          <input type="number" step="0.01" placeholder="6.9" [(ngModel)]="product.displaySize" name="displaySize" required>
+        </div>
+        <div class="field-node">
+          <label>Rear Camera MP</label>
+          <input type="number" placeholder="48" [(ngModel)]="product.rearCameraMP" name="rearCameraMP" required>
+        </div>
+        <div class="field-node">
+          <label>Front Camera MP</label>
+          <input type="number" placeholder="12" [(ngModel)]="product.frontCameraMP" name="frontCameraMP" required>
+        </div>
+      </div>
+
+      <div class="input-row-group">
+        <div class="field-node">
+          <label>Rear Camera Details</label>
+          <input type="text" placeholder="48MP wide + 12MP ultra-wide + 12MP telephoto" [(ngModel)]="product.rearCameraDetails" name="rearCameraDetails" required>
+        </div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Processor</label>
+          <input type="text" placeholder="Apple A19 Pro" [(ngModel)]="product.processor" name="processor" required>
+        </div>
         <div class="field-node">
           <label>Processor Tier</label>
           <select [(ngModel)]="product.processorTier" name="processorTier" required>
+            <option value="entry">Entry Compute</option>
             <option value="midrange">Midrange Efficiency Core</option>
             <option value="upper-midrange">Upper Midrange Compute</option>
             <option value="flagship">Flagship Silicon Elite</option>
           </select>
         </div>
         <div class="field-node">
-          <label>Price Segment Placement</label>
+          <label>Processor Fabrication</label>
+          <input type="text" placeholder="3nm" [(ngModel)]="product.processorFabrication" name="processorFabrication" required>
+        </div>
+      </div>
+
+      <div class="form-section-divider">
+        <span>03 / Display, Software, Build</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Display Type</label>
+          <input type="text" placeholder="LTPO OLED" [(ngModel)]="product.displayType" name="displayType" required>
+        </div>
+        <div class="field-node">
+          <label>Display Resolution</label>
+          <input type="text" placeholder="2796 x 1290" [(ngModel)]="product.displayResolution" name="displayResolution" required>
+        </div>
+        <div class="field-node">
+          <label>Brightness</label>
+          <input type="text" placeholder="2000 nits peak" [(ngModel)]="product.brightness" name="brightness" required>
+        </div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>OS</label>
+          <input type="text" placeholder="iOS" [(ngModel)]="product.os" name="os" required>
+        </div>
+        <div class="field-node">
+          <label>UI Skin</label>
+          <input type="text" placeholder="iOS" [(ngModel)]="product.uiSkin" name="uiSkin" required>
+        </div>
+        <div class="field-node">
+          <label>UI Version</label>
+          <input type="text" placeholder="iOS 26" [(ngModel)]="product.uiVersion" name="uiVersion" required>
+        </div>
+      </div>
+
+      <div class="input-three-grid">
+        <div class="field-node">
+          <label>Biometric Security</label>
+          <input type="text" placeholder="Face ID" [(ngModel)]="product.biometricSecurity" name="biometricSecurity" required>
+        </div>
+        <div class="field-node">
+          <label>Speaker</label>
+          <input type="text" placeholder="Stereo speakers" [(ngModel)]="product.speaker" name="speaker" required>
+        </div>
+        <div class="field-node">
+          <label>Waterproof</label>
+          <input type="text" placeholder="IP68" [(ngModel)]="product.waterproof" name="waterproof" required>
+        </div>
+      </div>
+
+      <div class="input-row-group">
+        <div class="field-node">
+          <label>Video Recording</label>
+          <input type="text" placeholder="4K Dolby Vision up to 60fps" [(ngModel)]="product.videoRecording" name="videoRecording" required>
+        </div>
+      </div>
+
+      <div class="form-section-divider">
+        <span>04 / Scoring Engine Calibration (1 - 100)</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Gaming Score ({{ product.gamingScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.gamingScore" name="gamingScore" [style.background]="getRangeBackground(product.gamingScore)">
+        </div>
+        <div class="field-node">
+          <label>Camera Score ({{ product.cameraScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.cameraScore" name="cameraScore" [style.background]="getRangeBackground(product.cameraScore)">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Performance Score ({{ product.performanceScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.performanceScore" name="performanceScore" [style.background]="getRangeBackground(product.performanceScore)">
+        </div>
+        <div class="field-node">
+          <label>Battery Score ({{ product.batteryScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.batteryScore" name="batteryScore" [style.background]="getRangeBackground(product.batteryScore)">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Display Score ({{ product.displayScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.displayScore" name="displayScore" [style.background]="getRangeBackground(product.displayScore)">
+        </div>
+        <div class="field-node">
+          <label>Design Score ({{ product.designScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.designScore" name="designScore" [style.background]="getRangeBackground(product.designScore)">
+        </div>
+      </div>
+
+      <div class="input-split-grid">
+        <div class="field-node">
+          <label>Value Score ({{ product.valueScore || 50 }})</label>
+          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.valueScore" name="valueScore" [style.background]="getRangeBackground(product.valueScore)">
+        </div>
+        <div class="field-node">
+          <label>Price Segment</label>
           <select [(ngModel)]="product.priceSegment" name="priceSegment" required>
             <option value="budget">Budget Segment Entry</option>
             <option value="midrange">Midrange Standard Matrix</option>
@@ -116,63 +289,23 @@
         </div>
       </div>
 
-      <div class="form-section-divider">
-        <span>03 / Scoring Engine Calibration (1 - 100)</span>
-        <div class="divider-line"></div>
-      </div>
-
-      <div class="input-split-grid">
+      <div class="input-row-group">
         <div class="field-node">
-          <label>Gaming Metric Score ({{ product.gamingScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.gamingScore" name="gamingScore" [style.background]="getRangeBackground(product.gamingScore)">
-        </div>
-        <div class="field-node">
-          <label>Camera Optic Score ({{ product.cameraScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.cameraScore" name="cameraScore" [style.background]="getRangeBackground(product.cameraScore)">
-        </div>
-      </div>
-
-      <div class="input-split-grid">
-        <div class="field-node">
-          <label>Performance Speed Score ({{ product.performanceScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.performanceScore" name="performanceScore" [style.background]="getRangeBackground(product.performanceScore)">
-        </div>
-        <div class="field-node">
-          <label>Battery Endurance Score ({{ product.batteryScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.batteryScore" name="batteryScore" [style.background]="getRangeBackground(product.batteryScore)">
-        </div>
-      </div>
-
-      <div class="input-split-grid">
-        <div class="field-node">
-          <label>Industrial Design Score ({{ product.designScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.designScore" name="designScore" [style.background]="getRangeBackground(product.designScore)">
-        </div>
-        <div class="field-node">
-          <label>Display Quality Score ({{ product.displayScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.displayScore" name="displayScore" [style.background]="getRangeBackground(product.displayScore)">
-        </div>
-      </div>
-
-      <div class="input-split-grid">
-        <div class="field-node">
-          <label>Market Value Loop Score ({{ product.valueScore || 50 }})</label>
-          <input type="range" min="10" max="100" step="1" [(ngModel)]="product.valueScore" name="valueScore" [style.background]="getRangeBackground(product.valueScore)">
-        </div>
-      </div>
-
-      <div class="input-row-group" style="margin-top: 15px;">
-        <div class="field-node">
-          <label>Technical Narrative Description</label>
-          <textarea placeholder="Enter comprehensive product storytelling profiles..." [(ngModel)]="product.description" name="description" rows="4"></textarea>
+          <label>Ideal For</label>
+          <input
+            type="text"
+            placeholder="Heavy Gamers, Content Creators, Everyday Use"
+            [(ngModel)]="idealForText"
+            name="idealForText"
+            required
+          >
+          <small class="helper-text">Separate each audience with a comma.</small>
         </div>
       </div>
 
       <button type="submit" class="console-submit-btn">
         <span>{{ isEdit ? 'Commit Specification Matrix' : 'Deploy Asset to Cloud' }}</span>
       </button>
-
     </form>
-
   </div>
 </div>

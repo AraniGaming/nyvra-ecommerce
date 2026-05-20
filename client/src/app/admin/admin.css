@@ -322,6 +322,11 @@
   text-transform: uppercase;
 }
 
+.network-badge {
+  background: rgba(0, 210, 255, 0.12);
+  color: #00d2ff;
+}
+
 /* STOCK COUNTER TELEMETRY DOTS */
 .stock-indicator {
   display: inline-flex;

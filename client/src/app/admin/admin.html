@@ -76,6 +76,7 @@
           <th>Asset</th>
           <th>Product Identifier</th>
           <th>Brand Line</th>
+          <th>Network</th>
           <th>Unit Valuation</th>
           <th>Inventory Stock</th>
           <th class="text-right">Operations</th>
@@ -102,6 +103,7 @@
           </td>
           <td class="primary-text">{{ product.name }}</td>
           <td><span class="brand-badge">{{ product.brand }}</span></td>
+          <td><span class="brand-badge network-badge">{{ product.network || 'N/A' }}</span></td>
           <td class="price-text">₹{{ product.price?.toLocaleString() }}</td>
           <td>
             <div class="stock-indicator" [class.low-stock]="product.stock <= 5">

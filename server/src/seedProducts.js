@@ -25,7 +25,12 @@ const importData = async () => {
       return {
         // Basic Info
         name: `${item.brand || ''} ${item.model || ''} ${item.variantName || ''}`.trim(),
+        model: item.model || '',
+        variantName: item.variantName || '',
         price: Number(item.price) || 0,
+        availabilityStatus: item.availabilityStatus || 'in-stock',
+        condition: item.condition || 'new',
+        launchYear: Number(item.launchYear) || undefined,
         image: item.image || '',
         brand: item.brand || 'Unknown',
         category: item.category || "smartphone",
@@ -38,8 +43,26 @@ const importData = async () => {
         battery: Number(item.battery) || 0,
         chargingSpeed: Number(item.chargingSpeed) || 0,
         refreshRate: Number(item.refreshRate) || 60,
+        displaySize: Number(item.displaySize) || undefined,
+        rearCameraMP: Number(item.rearCameraMP) || undefined,
+        rearCameraDetails: item.rearCameraDetails || '',
+        frontCameraMP: Number(item.frontCameraMP) || undefined,
         processor: item.processor || 'Unknown',
         processorTier: item.processorTier || "midrange",
+        processorFabrication: item.processorFabrication || '',
+        network: item.network || '5G',
+
+        // Display, Software, Build
+        displayType: item.displayType || '',
+        displayResolution: item.displayResolution || '',
+        brightness: item.brightness || '',
+        os: item.os || '',
+        uiSkin: item.uiSkin || '',
+        uiVersion: item.uiVersion || '',
+        biometricSecurity: item.biometricSecurity || '',
+        speaker: item.speaker || '',
+        waterproof: item.waterproof || '',
+        videoRecording: item.videoRecording || '',
 
         // Smart Recommendation Scores (PARSING REAL VALUES OUT OF 100)
         gamingScore: Number(item.gamingScore) || 50,

@@ -381,6 +381,7 @@ export class Products implements OnInit, OnDestroy {
       product.processor,
       product.processorTier,
       product.priceSegment,
+      product.network,
       product.ram ? `${product.ram}gb ram` : '',
       product.storage ? `${product.storage}gb storage ${this.formatStorage(product.storage)} storage` : '',
       ...(product.ramOptions || []).map((ram: number) => `${ram}gb ram`),
@@ -966,6 +967,10 @@ export class Products implements OnInit, OnDestroy {
   }
 
   private variantHas5G(variant: any): boolean {
+    if (String(variant.network || '').toLowerCase().includes('5g')) {
+      return true;
+    }
+
     const text = [
       variant.name,
       variant.description,

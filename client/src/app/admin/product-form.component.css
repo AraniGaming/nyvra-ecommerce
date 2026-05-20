@@ -17,13 +17,13 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .form-console-box {
   width: 100%;
-  max-width: 640px;
+  max-width: 980px;
   background: var(--console-panel);
   border: 1px solid var(--glass-edge);
   border-radius: 24px;
@@ -62,10 +62,13 @@
   font-size: 0.95rem;
   border-radius: 10px;
   outline: none;
+  width: 100%;
 }
 
-.field-node select focus {
+.field-node select:focus {
   border-color: var(--focus-neon);
+  background: rgba(0, 122, 255, 0.02);
+  box-shadow: 0 0 15px rgba(0, 122, 255, 0.15);
 }
 
 /* Style range inputs to blend into the premium dark panel */
@@ -140,6 +143,7 @@
 /* THE STRUCTURED STUDIO INPUT NODES */
 .studio-form { display: flex; flex-direction: column; gap: 20px; }
 .input-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.input-three-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .field-node { display: flex; flex-direction: column; gap: 8px; }
 
 .field-node label {
@@ -190,6 +194,34 @@
   width: 100%;
 }
 
+.generated-name-card {
+  padding: 16px;
+  border: 1px solid rgba(0, 210, 255, 0.14);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.08), rgba(168, 85, 247, 0.07));
+}
+
+.generated-name-card span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--focus-neon);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.generated-name-card strong {
+  color: var(--text-white);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.helper-text {
+  color: var(--text-dim);
+  font-size: 0.78rem;
+}
+
 /* CONSOLE SYSTEM ACTION DEPLOY TRIGGER */
 .console-submit-btn {
   margin-top: 15px;
@@ -211,8 +243,15 @@
 }
 
 @media (max-width: 600px) {
-  .input-split-grid { grid-template-columns: 1fr; gap: 20px; }
+  .input-split-grid,
+  .input-three-grid { grid-template-columns: 1fr; gap: 20px; }
   .form-console-box { padding: 2rem 1.5rem; }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .input-three-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* ... All your existing form styles are up here ... */

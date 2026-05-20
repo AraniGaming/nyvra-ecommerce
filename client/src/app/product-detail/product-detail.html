@@ -9,8 +9,8 @@
     <ul>
       <li><a routerLink="/">Home</a></li>
       <li><a routerLink="/products">Products</a></li>
-      <li><a routerLink="/" fragment="domains">Domains</a></li>
       <li><a routerLink="/" fragment="featured-products">Featured</a></li>
+      <li><a routerLink="/" fragment="domains">Domains</a></li>
       <li><a routerLink="/" fragment="experience">Experience</a></li>
       <li>
         <a routerLink="/smart-finder" class="smart-finder-nav">
@@ -123,6 +123,22 @@
         <div>
           <span class="meta-label">Charging</span>
           <strong>{{ product.chargingSpeed || 20 }}W</strong>
+        </div>
+        <div *ngIf="product.network">
+          <span class="meta-label">Network</span>
+          <strong>{{ product.network }}</strong>
+        </div>
+        <div *ngIf="product.displayType || product.displaySize">
+          <span class="meta-label">Display</span>
+          <strong>{{ product.displaySize ? product.displaySize + ' inch' : product.displayType }}</strong>
+        </div>
+        <div *ngIf="product.rearCameraMP">
+          <span class="meta-label">Rear Camera</span>
+          <strong>{{ product.rearCameraMP }}MP</strong>
+        </div>
+        <div *ngIf="product.os || product.uiSkin">
+          <span class="meta-label">Software</span>
+          <strong>{{ product.uiSkin || product.os }} {{ product.uiVersion || '' }}</strong>
         </div>
       </div>
 
