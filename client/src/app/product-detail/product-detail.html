@@ -1,4 +1,3 @@
-
 <header>
   <nav>
     <div class="logo" routerLink="/" aria-label="Nyvra home">
@@ -35,11 +34,7 @@
   <span>Loading product profile...</span>
 </div>
 
-<div
-  *ngIf="product"
-  class="product-detail-page"
->
-
+<main *ngIf="product" class="product-detail-page">
   <div class="product-detail-container">
     <a routerLink="/products" class="back-link page-back-link">← Back to collection</a>
 
@@ -52,19 +47,24 @@
       </div>
 
       <div class="quick-spec-strip">
-        <span>{{ product.ram }}GB RAM</span>
-        <span>{{ formatStorage(product.storage) }} Storage</span>
-        <span>{{ product.battery }}mAh</span>
+        <span *ngFor="let spec of getHeroSpecs()">
+          <small>{{ spec.label }}</small>
+          <strong>{{ spec.value }}</strong>
+        </span>
       </div>
     </section>
 
     <section class="product-info">
       <div class="brand-row">
-        <span class="brand">{{ product.brand }}</span>
-        <span class="category-pill">{{ product.category }}</span>
+        <span class="brand" *ngFor="let pill of getMetaPills()">{{ pill }}</span>
       </div>
 
       <h1>{{ getDisplayName() }}</h1>
+
+      <div class="configuration-line" *ngIf="getVariantName()">
+        <span>Selected configuration</span>
+        <strong>{{ getVariantName() }}</strong>
+      </div>
 
       <p class="description">
         {{ product.description }}
@@ -100,46 +100,8 @@
         </div>
       </div>
 
-      <div class="score-grid">
-        <div class="score-card" *ngFor="let metric of getScoreMetrics()">
-          <span>{{ metric.label }}</span>
-          <strong>{{ metric.value }}</strong>
-        </div>
-      </div>
-
-      <div class="architecture-panel">
-        <div>
-          <span class="meta-label">Processor</span>
-          <strong>{{ product.processor }}</strong>
-        </div>
-        <div>
-          <span class="meta-label">Silicon Tier</span>
-          <strong>{{ product.processorTier }}</strong>
-        </div>
-        <div>
-          <span class="meta-label">Refresh Rate</span>
-          <strong>{{ product.refreshRate || 60 }}Hz</strong>
-        </div>
-        <div>
-          <span class="meta-label">Charging</span>
-          <strong>{{ product.chargingSpeed || 20 }}W</strong>
-        </div>
-        <div *ngIf="product.network">
-          <span class="meta-label">Network</span>
-          <strong>{{ product.network }}</strong>
-        </div>
-        <div *ngIf="product.displayType || product.displaySize">
-          <span class="meta-label">Display</span>
-          <strong>{{ product.displaySize ? product.displaySize + ' inch' : product.displayType }}</strong>
-        </div>
-        <div *ngIf="product.rearCameraMP">
-          <span class="meta-label">Rear Camera</span>
-          <strong>{{ product.rearCameraMP }}MP</strong>
-        </div>
-        <div *ngIf="product.os || product.uiSkin">
-          <span class="meta-label">Software</span>
-          <strong>{{ product.uiSkin || product.os }} {{ product.uiVersion || '' }}</strong>
-        </div>
+      <div class="ideal-for-row" *ngIf="getIdealForList().length > 0">
+        <span *ngFor="let tag of getIdealForList()">{{ tag }}</span>
       </div>
 
       <div class="action-row">
@@ -156,6 +118,79 @@
       </div>
     </section>
 
-  </div>
+    <section class="detail-lower-grid">
+      <div class="insight-panel">
+        <div class="panel-heading">
+          <span>Snapshot</span>
+          <h2>What stands out</h2>
+        </div>
 
-</div>
+        <div class="insight-grid">
+          <article class="insight-card" *ngFor="let insight of getInsightCards()">
+            <span>{{ insight.label }}</span>
+            <strong>{{ insight.value }}</strong>
+          </article>
+        </div>
+      </div>
+
+      <div class="camera-panel" *ngIf="getCameraHighlights().length > 0">
+        <div class="panel-heading">
+          <span>Camera & Video</span>
+          <h2>Optics profile</h2>
+        </div>
+
+        <div class="camera-detail-list">
+          <div class="camera-detail-row">
+            <span>Main system</span>
+            <strong>{{ getCameraHeadline() }}</strong>
+          </div>
+
+          <div class="camera-detail-row" *ngFor="let camera of getCameraHighlights()">
+            <span>{{ camera.label }}</span>
+            <strong>{{ camera.value }}</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="score-panel score-panel-wide">
+      <div class="panel-heading">
+        <span>Score Profile</span>
+        <h2>Performance map</h2>
+      </div>
+
+      <div class="score-list">
+        <div class="score-row" *ngFor="let metric of getScoreMetrics()">
+          <div class="score-row-top">
+            <span>{{ metric.label }}</span>
+            <strong>{{ metric.value }}/100</strong>
+          </div>
+          <div class="score-track">
+            <div
+              class="score-fill"
+              [style.width.%]="metric.value"
+              [style.background]="getScoreBackground(metric.value)"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="specs-panel">
+      <div class="panel-heading specs-heading">
+        <span>Specification</span>
+        <h2>Technical profile</h2>
+      </div>
+
+      <div class="spec-section-grid">
+        <article class="spec-section" *ngFor="let section of getSpecSections()">
+          <h3>{{ section.title }}</h3>
+          <div class="spec-row" *ngFor="let item of section.items">
+            <span>{{ item.label }}</span>
+            <strong>{{ item.value }}</strong>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</main>

@@ -12,9 +12,12 @@ const importData = async () => {
     await connectDB();
     console.log("🟢 Connected to Database.");
 
-    // Clear old data to prevent duplicates
-    await Product.deleteMany({});
-    console.log("🧹 Cleared old products.");
+    const shouldReset = process.argv.includes("--reset");
+
+    if (shouldReset) {
+      await Product.deleteMany({});
+      console.log("🧹 Cleared old products.");
+    }
 
     // Path to your premium CSV file
     const csvFilePath = path.join(__dirname, "WEBSITE(Sheet1)-2.csv"); 
@@ -79,10 +82,32 @@ const importData = async () => {
       };
     });
 
-    // Upload clean array of data to MongoDB cluster
-    await Product.insertMany(products);
+    if (shouldReset) {
+      await Product.insertMany(products);
+    } else {
+      await Product.bulkWrite(
+        products.map((product) => {
+          const { stock, ...syncedProduct } = product;
 
-    console.log(`✅ SUCCESS: ${products.length} Premium Products Imported successfully!`);
+          return {
+            updateOne: {
+              filter: { name: product.name },
+              update: {
+                $set: syncedProduct,
+                $setOnInsert: { stock }
+              },
+              upsert: true
+            }
+          };
+        })
+      );
+    }
+
+    console.log(
+      shouldReset
+        ? `✅ SUCCESS: ${products.length} Premium Products Imported successfully!`
+        : `✅ SUCCESS: ${products.length} Premium Products synced without changing existing IDs!`
+    );
     process.exit();
   } catch (error) {
     console.error("❌ Seeding Error:", error);

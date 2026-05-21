@@ -259,7 +259,7 @@
               <button
                 type="button"
                 *ngFor="let price of priceFilters"
-                [class.is-active]="selectedPrice === price.id"
+                [class.is-active]="isPriceFilterActive(price.id)"
                 (click)="setPriceFilter(price.id)"
               >
                 <span>{{ price.label }}</span>

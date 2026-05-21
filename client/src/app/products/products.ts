@@ -465,6 +465,7 @@ export class Products implements OnInit, OnDestroy {
     }
     if (chip.kind === 'price') {
       state.selectedPrice = chip.value;
+      state.priceLimit = this.getPriceLimitForPreset(chip.value);
     }
     if (chip.kind === 'network') {
       state.selectedNetwork = chip.value;
@@ -513,7 +514,11 @@ export class Products implements OnInit, OnDestroy {
       this.selectedBrand = this.selectedBrand === chip.value ? 'all' : chip.value;
     }
     if (chip.kind === 'price') {
-      this.selectedPrice = this.selectedPrice === chip.value ? 'all' : chip.value;
+      if (this.selectedPrice === chip.value) {
+        this.clearPriceFilter();
+      } else {
+        this.applyPricePreset(chip.value);
+      }
     }
     if (chip.kind === 'network') {
       this.selectedNetwork = this.selectedNetwork === chip.value ? 'all' : chip.value;
@@ -543,7 +548,7 @@ export class Products implements OnInit, OnDestroy {
   }
 
   setPriceFilter(id: string): void {
-    this.selectedPrice = id;
+    this.applyPricePreset(id);
     this.applyFilters(true);
   }
 
@@ -589,6 +594,7 @@ export class Products implements OnInit, OnDestroy {
 
   onPriceLimitChange(value: number | string): void {
     this.priceLimit = Number(value);
+    this.selectedPrice = 'all';
     this.applyFilters(true);
   }
 
@@ -635,7 +641,7 @@ export class Products implements OnInit, OnDestroy {
       this.selectedBrand = 'all';
     }
     if (key === 'price') {
-      this.selectedPrice = 'all';
+      this.clearPriceFilter();
     }
     if (key === 'priceLimit') {
       this.priceLimit = this.maxPriceLimit;
@@ -729,7 +735,7 @@ export class Products implements OnInit, OnDestroy {
         label: this.priceFilters.find((item) => item.id === this.selectedPrice)?.label || this.selectedPrice
       });
     }
-    if (this.priceLimit < this.maxPriceLimit) {
+    if (this.selectedPrice === 'all' && this.priceLimit < this.maxPriceLimit) {
       filters.push({ key: 'priceLimit', label: `Up to ${this.formatPriceCap()}` });
     }
     if (this.selectedRam) {
@@ -843,6 +849,34 @@ export class Products implements OnInit, OnDestroy {
 
   getPriceProgress(): number {
     return Math.min(100, Math.max(0, (this.priceLimit / this.maxPriceLimit) * 100));
+  }
+
+  isPriceFilterActive(id: string): boolean {
+    if (id === 'all') {
+      return this.selectedPrice === 'all' && this.priceLimit >= this.maxPriceLimit;
+    }
+
+    return this.selectedPrice === id;
+  }
+
+  private applyPricePreset(id: string): void {
+    this.selectedPrice = id;
+    this.priceLimit = this.getPriceLimitForPreset(id);
+  }
+
+  private clearPriceFilter(): void {
+    this.selectedPrice = 'all';
+    this.priceLimit = this.maxPriceLimit;
+  }
+
+  private getPriceLimitForPreset(id: string): number {
+    const filter = this.priceFilters.find((item) => item.id === id);
+
+    if (!filter || filter.id === 'all' || !Number.isFinite(filter.max)) {
+      return this.maxPriceLimit;
+    }
+
+    return Number(filter.max);
   }
 
   getPriceSliderBackground(): string {
